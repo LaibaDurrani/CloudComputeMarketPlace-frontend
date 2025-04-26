@@ -28,14 +28,8 @@ const Header = () => {
       
       <nav className="header-nav">
         <Link to="/dashboard">Browse</Link>
-        <Link to="/mylistings">My Listings</Link>
         <Link to="/rentals">My Rentals</Link>
-        <button 
-          className="add-computer-btn"
-          onClick={() => navigate('/add-computer')}
-        >
-          + List Computer
-        </button>
+        <Link to="/profile">User</Link>
       </nav>
 
       <div className="header-actions">

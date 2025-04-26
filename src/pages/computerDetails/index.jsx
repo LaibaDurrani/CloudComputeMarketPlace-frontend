@@ -1,98 +1,197 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom'; 
 import Header from '../../components/Header';
+import Sidebar from '../../components/Sidebar'; 
+import { useSidebar } from '../../context/SidebarContext'; 
 import './styles.css';
 
 const ComputerDetails = () => {
+  const { isSidebarOpen } = useSidebar();
   const { id } = useParams();
-  const navigate = useNavigate(); // Add this at the top of component
+  const navigate = useNavigate();
+  
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedSlots, setSelectedSlots] = useState([]);
+  const [timeSlots, setTimeSlots] = useState([]);
+
+  const computerData = {
+    name: "Deep Learning Workstation",
+    owner: "John Doe",
+    price: 8.50,
+    specs: {
+      cpu: "AMD Threadripper 3990X",
+      ram: "128GB DDR4",
+      gpu: "2x NVIDIA A100",
+      storage: "4TB NVMe SSD"
+    },
+    useCases: ["AI Training", "Data Processing"],
+    status: "Available",
+    rating: 4.8
+  };
+
+  const generateTimeSlots = (date) => {
+    const slots = [];
+    for (let hour = 0; hour <= 23; hour++) {
+      const slotTime = new Date(date);
+      slotTime.setHours(hour, 0, 0);
+      slots.push({
+        time: slotTime,
+        id: `${date.toDateString()}-${hour}`,
+        available: Math.random() > 0.3, 
+      });
+    }
+    return slots;
+  };
+
+  useEffect(() => {
+    const slots = generateTimeSlots(selectedDate);
+    setTimeSlots(slots);
+    setSelectedSlots([]);
+  }, [selectedDate]);
+
+  const handleSlotSelect = (slotId) => {
+    if (selectedSlots.includes(slotId)) {
+      setSelectedSlots(selectedSlots.filter(id => id !== slotId));
+    } else {
+      setSelectedSlots([...selectedSlots, slotId]);
+    }
+  };
+
+  const totalPrice = (selectedSlots.length * computerData.price).toFixed(2);
+
+  const handleCheckout = () => {
+    navigate('/checkout', {
+      state: {
+        selectedSlots,
+        computerData,
+        totalPrice
+      }
+    });
+  };
 
   return (
-    <div className="computer-details">
+    <>
       <Header />
-      <div className="details-content">
-        <div className="details-header">
-          <div className="header-left">
-            <h1>Computer Name</h1>
-            <div className="location-info">📍 Location</div>
-          </div>
-          <div className="header-right">
-            <div className="price-tag">Price/hr</div>
-            <button 
-              className="rent-button" 
-              onClick={() => navigate(`/checkout/${id}`)}
-            >
-              Rent Now
-            </button>
-          </div>
-        </div>
-
-        <div className="details-grid">
-          <div className="main-content">
-            <div className="image-gallery">
-              <div className="main-image">
-                <img src="" alt="Computer" />
-              </div>
-              <div className="thumbnail-strip">
-                {/* Thumbnails will go here */}
+      <Sidebar />
+      <div className={`page-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+        <div className="details-content">
+          <div className="details-header">
+            <div className="header-left">
+              <h1>{computerData.name}</h1>
+              <div className="owner-info">
+                <span className="owner-name">by {computerData.owner}</span>
+                <span className="owner-rating">★ {computerData.rating}</span>
               </div>
             </div>
-
-            <section className="description-section">
-              <h2>About this Computer</h2>
-              <p className="description-text"></p>
-            </section>
-
-            <section className="specifications-section">
-              <h2>Technical Specifications</h2>
-              <div className="specs-grid">
-                {/* Specs will go here */}
-              </div>
-            </section>
-
-            <section className="benchmarks-section">
-              <h2>Performance Benchmarks</h2>
-              <div className="benchmarks-grid">
-                {/* Benchmarks will go here */}
-              </div>
-            </section>
+            <div className="header-right">
+              <div className="price-tag">${computerData.price}/hr</div>
+            </div>
           </div>
 
-          <aside className="sidebar">
-            <div className="owner-card">
-              <div className="owner-header">
-                <img src="" alt="Owner" className="owner-avatar" />
-                <div className="owner-info">
-                  <h3>Owner Name</h3>
-                  <div className="owner-stats">
-                    <span>⭐ Rating</span>
-                    <span>🔄 Total Rentals</span>
+          <div className="details-grid">
+            <div className="main-content">
+              <section>
+                <h2>Specifications</h2>
+                <div className="specs-grid">
+                  {Object.entries(computerData.specs).map(([key, value]) => (
+                    <div key={key} className="spec-item">
+                      <span className="spec-label">{key.toUpperCase()}</span>
+                      <span className="spec-value">{value}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className="booking-section">
+                <h2>Select Booking Time</h2>
+                <div className="date-picker-wrapper">
+                  <select 
+                    className="date-select"
+                    value={selectedDate.toISOString()}
+                    onChange={(e) => setSelectedDate(new Date(e.target.value))}
+                  >
+                    {[0, 1].map(days => {
+                      const date = new Date();
+                      date.setDate(date.getDate() + days);
+                      return (
+                        <option key={days} value={date.toISOString()}>
+                          {date.toLocaleDateString('en-US', { 
+                            weekday: 'long', 
+                            month: 'long', 
+                            day: 'numeric' 
+                          })}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+
+                <div className="time-slots">
+                  {timeSlots.map(slot => (
+                    <button
+                      key={slot.id}
+                      className={`time-slot ${selectedSlots.includes(slot.id) ? 'selected' : ''} ${!slot.available ? 'unavailable' : ''}`}
+                      onClick={() => slot.available && handleSlotSelect(slot.id)}
+                      disabled={!slot.available}
+                    >
+                      {slot.time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              <section className="billing-section">
+                <div className="billing-card">
+                  <h2>Billing Summary</h2>
+                  <div className="billing-details">
+                    <div className="billing-row">
+                      <span>Hours Selected</span>
+                      <span>{selectedSlots.length}</span>
+                    </div>
+                    <div className="billing-row">
+                      <span>Rate per Hour</span>
+                      <span>${computerData.price}</span>
+                    </div>
+                    <div className="billing-row total">
+                      <span>Total Amount</span>
+                      <span>${totalPrice}</span>
+                    </div>
                   </div>
+                  <button 
+                    className="checkout-btn"
+                    disabled={selectedSlots.length === 0}
+                    onClick={handleCheckout}  
+                  >
+                    Proceed to Checkout
+                  </button>
+                </div>
+              </section>
+            </div>
+
+            <div className="sidebar">
+              <div className="availability-card">
+                <div className="availability-status">
+                  <span className={`status-badge ${computerData.status.toLowerCase()}`}>
+                    {computerData.status}
+                  </span>
                 </div>
               </div>
-              <button className="contact-owner">Contact Owner</button>
-            </div>
 
-            <div className="availability-card">
-              <h3>Availability</h3>
-              <div className="availability-status">
-                <span className="status-badge">Status</span>
-                <span className="next-available">Next Available</span>
+              <div className="use-cases-card">
+                <h2>Use Cases</h2>
+                <div className="use-cases-list">
+                  {computerData.useCases.map(useCase => (
+                    <span key={useCase} className="use-case-tag">{useCase}</span>
+                  ))}
+                </div>
               </div>
-              <button className="book-now">Book Now</button>
-            </div>
 
-            <div className="use-cases-card">
-              <h3>Recommended Use Cases</h3>
-              <div className="use-cases-list">
-                {/* Use cases will go here */}
-              </div>
             </div>
-          </aside>
+          </div>
+
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -118,12 +118,6 @@ const Dashboard = () => {
                   >
                     View Details
                   </button>
-                  <button 
-                    className="rent-btn"
-                    onClick={() => navigate(`/checkout/${computer.id}`)}
-                  >
-                    Rent Now
-                  </button>
                 </div>
               </div>
             ))}
