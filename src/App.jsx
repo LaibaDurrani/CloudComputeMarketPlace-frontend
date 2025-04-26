@@ -7,7 +7,7 @@ import AddComputer from './pages/addComputer';
 import MyRentals from './pages/rentals';
 import Profile from './pages/profile';
 import ComputerDetails from './pages/computerDetails';
-import Checkout from './pages/checkout';
+import Checkout from './pages/checkout';  // Add this import
 import { SidebarProvider } from './context/SidebarContext';
 import Sidebar from './components/Sidebar';
 
@@ -25,7 +25,7 @@ function App() {
               <Route path="/rentals" element={<MyRentals />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/computer/:id" element={<ComputerDetails />} />
-              <Route path="/checkout/:id" element={<Checkout />} />
+              <Route path="/checkout" element={<Checkout />} /> {/* Add this route */}
               <Route path="/add-computer" element={<AddComputer />} />
             </Routes>
           </div>
