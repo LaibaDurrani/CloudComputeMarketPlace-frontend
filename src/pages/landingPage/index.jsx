@@ -7,6 +7,8 @@ import logo from '../../assets/logo.png';
 import SignupPopup from '../../components/SignupPopup';
 
 import LoginPopup from '../../components/LoginPopup';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 const LandingPage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -220,6 +222,7 @@ const LandingPage = () => {
           setIsSignupOpen(true);
         }}
       />
+      <Footer />
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar'; 
 import { useSidebar } from '../../context/SidebarContext'; 
 import './styles.css';
 
@@ -70,10 +69,9 @@ const ComputerDetails = () => {
   };
 
   return (
-    <>
+    <div className={`computer-details-page ${isSidebarOpen ? 'sidebar-open' : ''}`}>
       <Header />
-      <Sidebar />
-      <div className={`page-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+      <div className="computer-details-content">
         <div className="details-content">
           <div className="details-header">
             <div className="header-left">
@@ -191,7 +189,7 @@ const ComputerDetails = () => {
 
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

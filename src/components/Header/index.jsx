@@ -1,13 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSidebar } from '../../context/SidebarContext';
+import { useDashboardMode } from '../../context/DashboardModeContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import './styles.css';
 
 const Header = () => {
   const navigate = useNavigate();
   const { setIsSidebarOpen } = useSidebar();
+  const { dashboardMode } = useDashboardMode();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  const getNavLinks = () => {
+    if (dashboardMode === 'seller') {
+      return (
+        <>
+          <Link to="/mylistings">My Listings</Link>
+          <Link to="/add-computer">Add Computer</Link>
+          <Link to="/profile">User</Link>
+        </>
+      );
+    }
+    return (
+      <>
+        <Link to="/dashboard">Browse</Link>
+        <Link to="/rentals">My Rentals</Link>
+        <Link to="/profile">User</Link>
+      </>
+    );
+  };
 
   return (
     <header className="header">
@@ -22,14 +42,11 @@ const Header = () => {
         </button>
         <div className="title-group">
           <h1>CloudCompute Marketplace</h1>
-          <span className="subtitle">Find Computing Power on Demand</span>
         </div>
       </div>
       
       <nav className="header-nav">
-        <Link to="/dashboard">Browse</Link>
-        <Link to="/rentals">My Rentals</Link>
-        <Link to="/profile">User</Link>
+        {getNavLinks()}
       </nav>
 
       <div className="header-actions">
