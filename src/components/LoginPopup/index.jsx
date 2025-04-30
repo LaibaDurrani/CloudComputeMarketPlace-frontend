@@ -1,23 +1,35 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './styles.css';
 
-const LoginPopup = ({ isOpen, onClose, onSignupClick }) => {
+const LoginPopup = ({ isOpen, onClose, onSwitchToSignup }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const [error, setError] = useState('');
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+      console.log('Login successful:', response.data);
+      localStorage.setItem('userToken', response.data.token);
+      localStorage.setItem('userData', JSON.stringify(response.data));
+      onClose();
+    } catch (err) {
+      console.error('Login error:', err.response?.data);
+      setError(err.response?.data?.message || 'Login failed');
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle login logic here
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   const handleGoogleLogin = () => {
@@ -30,8 +42,10 @@ const LoginPopup = ({ isOpen, onClose, onSignupClick }) => {
     <div className="login-overlay">
       <div className="login-popup">
         <button className="close-button" onClick={onClose}>&times;</button>
-        <h2>Welcome Back</h2>
+        <h2>Login</h2>
         
+        {error && <div className="error-message">{error}</div>}
+
         <button className="google-login-btn" onClick={handleGoogleLogin}>
           <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" />
           Login with Google
@@ -69,9 +83,8 @@ const LoginPopup = ({ isOpen, onClose, onSignupClick }) => {
           <span>Don't have an account?</span>
           <a href="#" onClick={(e) => {
             e.preventDefault();
-            onClose();
-            onSignupClick();
-          }}>Sign up</a>
+            onSwitchToSignup();
+          }}>Sign Up</a>
         </div>
       </div>
     </div>

@@ -1,25 +1,41 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './styles.css';
 
-const SignupPopup = ({ isOpen, onClose }) => {
+const SignupPopup = ({ isOpen, onClose, onSwitchToLogin }) => {
   const [formData, setFormData] = useState({
-    username: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
+  const [error, setError] = useState('');
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    
+    try {
+      const { confirmPassword, ...signupData } = formData;
+      const response = await axios.post('http://localhost:5000/api/auth/signup', signupData);
+      console.log('Signup successful:', response.data);
+      onClose();
+    } catch (err) {
+      console.error('Signup error:', err.response?.data);
+      setError(err.response?.data?.message || 'Signup failed');
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle signup logic here
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   const handleGoogleSignup = () => {
@@ -34,6 +50,8 @@ const SignupPopup = ({ isOpen, onClose }) => {
         <button className="close-button" onClick={onClose}>&times;</button>
         <h2>Create Account</h2>
         
+        {error && <div className="error-message">{error}</div>}
+
         <button className="google-signup-btn" onClick={handleGoogleSignup}>
           <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" />
           Sign up with Google
@@ -47,9 +65,9 @@ const SignupPopup = ({ isOpen, onClose }) => {
           <div className="form-group">
             <input
               type="text"
-              name="username"
-              placeholder="Username"
-              value={formData.username}
+              name="name"
+              placeholder="Name"
+              value={formData.name}
               onChange={handleChange}
               required
             />
@@ -89,9 +107,9 @@ const SignupPopup = ({ isOpen, onClose }) => {
 
         <div className="login-link">
           <span>Already have an account?</span>
-          <a href="#" onClick={() => {
-            onClose();
-            // Add your login modal open logic here
+          <a href="#" onClick={(e) => {
+            e.preventDefault();
+            onSwitchToLogin();
           }}>Login</a>
         </div>
       </div>
