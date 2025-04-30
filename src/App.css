@@ -129,3 +129,32 @@ html {
     opacity: 1;
   }
 }
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.content {
+  margin-top: 64px;
+  padding: 20px;
+  min-height: calc(100vh - 64px);
+  width: 100%;
+}
+
+/* Add styles for page headers */
+.page-header {
+  position: sticky;
+  top: 64px;
+  background: var(--background-color);
+  padding: 1rem 0;
+  margin: -20px -20px 20px -20px;
+  padding: 20px;
+  z-index: 997;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.75rem;
+}

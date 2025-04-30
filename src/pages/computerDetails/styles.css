@@ -122,6 +122,7 @@
   padding: 24px;
   border-radius: 12px;
   margin-top: 24px;
+  margin-bottom: 24px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
@@ -283,3 +284,32 @@
     text-align: left;
   }
 }
+
+.computer-details-page {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  padding-top: 64px;
+  transition: margin-left 0.3s ease;
+}
+
+.computer-details-page.sidebar-open {
+  margin-left: 280px;
+}
+
+.computer-details-content {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .computer-details-page.sidebar-open {
+    margin-left: 0;
+  }
+  
+  .computer-details-content {
+    padding: 20px 15px;
+  }
+}
+
+/* Keep all your existing styles below */

@@ -1,18 +1,21 @@
 .my-rentals {
   min-height: 100vh;
   background-color: #f5f7fa;
+  padding-top: 64px; /* Add padding for fixed header */
 }
 
 .rentals-container {
-  padding: 20px 30px 30px;
+  padding: 20px 30px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .rentals-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: sticky;
+  top: 64px;
+  background-color: #f5f7fa;
+  padding: 20px 0;
+  z-index: 997;
   margin-bottom: 30px;
 }
 
