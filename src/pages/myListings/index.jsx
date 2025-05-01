@@ -50,12 +50,6 @@ const MyListings = () => {
         <div className="listings-container">
           <div className="listings-header">
             <h1>My Listed Computers</h1>
-            <button 
-              className="add-listing-btn"
-              onClick={() => navigate('/add-computer')} 
-            >
-              + Add New Computer
-            </button>
           </div>
 
           <div className="stats-overview">
