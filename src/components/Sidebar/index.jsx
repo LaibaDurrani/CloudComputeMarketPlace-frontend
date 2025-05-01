@@ -13,7 +13,7 @@ const Sidebar = () => {
 
   const buyerMenuItems = [
     { icon: <FaHome />, label: 'Dashboard', path: '/dashboard' },
-    { icon: <FaShoppingCart />, label: 'My Rentals', path: '/my-rentals' },
+    { icon: <FaShoppingCart />, label: 'My Rentals', path: '/rentals' },
     { icon: <FaHistory />, label: 'Rental History', path: '/rental-history' },
     { icon: <FaCog />, label: 'Settings', path: '/settings' }
   ];

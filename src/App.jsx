@@ -12,6 +12,8 @@ import { SidebarProvider } from './context/SidebarContext';
 import Sidebar from './components/Sidebar';
 import { DashboardModeProvider } from './context/DashboardModeContext';
 import SellerDashboard from './pages/sellerDashboard';
+import Settings from './pages/settings';
+import RentalHistory from './pages/rentalHistory';
 
 function App() {
   return (
@@ -30,7 +32,9 @@ function App() {
                 <Route path="/computer/:id" element={<ComputerDetails />} />
                 <Route path="/checkout" element={<Checkout />} /> {/* Add this route */}
                 <Route path="/add-computer" element={<AddComputer />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="/seller-dashboard" element={<SellerDashboard />} />
+                <Route path="/rental-history" element={<RentalHistory />} />
               </Routes>
             </div>
           </div>

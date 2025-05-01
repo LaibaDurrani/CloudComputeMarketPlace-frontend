@@ -4,9 +4,8 @@
 }
 
 .add-computer-container {
-  max-width: 800px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 30px 30px 30px;
 }
 
 .add-computer-container h1 {

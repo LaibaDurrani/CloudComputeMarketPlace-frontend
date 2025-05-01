@@ -114,7 +114,6 @@ const MyRentals = () => {
                     <span>4h</span>
                   </div>
                 </div>
-
                 <div className="rental-actions">
                   <button className="connect-btn">Connect</button>
                   <button className="extend-btn">Extend Time</button>
