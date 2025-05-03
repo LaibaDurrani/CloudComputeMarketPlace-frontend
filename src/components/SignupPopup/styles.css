@@ -59,13 +59,13 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #014247;
 }
 
 .signup-submit-btn {
   width: 100%;
   padding: 0.8rem;
-  background-color: #007bff;
+  background-color: #014247;
   color: white;
   border: none;
   border-radius: 8px;
@@ -75,7 +75,7 @@
 }
 
 .signup-submit-btn:hover {
-  background-color: #0056b3;
+  background-color: #014247;
 }
 
 .google-signup-btn {
@@ -100,9 +100,12 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+
+
 .google-signup-btn img {
-  width: 20px;
-  height: 20px;
+  width: 20px; 
+  height: auto;
+  display: inline-block;
 }
 
 .divider {
@@ -138,7 +141,7 @@
 }
 
 .login-link a {
-  color: #007bff;
+  color: #014247;
   text-decoration: none;
   margin-left: 5px;
   font-weight: 500;

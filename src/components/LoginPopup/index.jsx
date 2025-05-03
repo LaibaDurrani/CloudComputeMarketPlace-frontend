@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './styles.css';
+import google from "../../assets/google.svg";
+import SignupPopup from '../SignupPopup';
 
 const LoginPopup = ({ isOpen, onClose, onSwitchToSignup }) => {
   const [formData, setFormData] = useState({
@@ -47,7 +49,7 @@ const LoginPopup = ({ isOpen, onClose, onSwitchToSignup }) => {
         {error && <div className="error-message">{error}</div>}
 
         <button className="google-login-btn" onClick={handleGoogleLogin}>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" />
+          <img src={google} alt="Google" />
           Login with Google
         </button>
         

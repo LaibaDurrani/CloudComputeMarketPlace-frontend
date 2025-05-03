@@ -1,8 +1,9 @@
 .footer {
-  background-color: #1a1a1a;
+  background-color: #014247;
   color: #ffffff;
   padding: 40px 0 20px;
   margin-top: auto;
+  font-size: 0.8rem;
 }
 
 .footer-content {
