@@ -40,7 +40,7 @@ const Footer = () => {
       </div>
       
       <div className="footer-bottom">
-        <p>&copy; 2024 CloudCompute Marketplace. All rights reserved.</p>
+        <p>&copy; 2025 CloudCompute Marketplace. All rights reserved.</p>
       </div>
     </footer>
   );

@@ -27,3 +27,18 @@ body {
   max-width: 1200px;
   margin: 0 auto;
 }
+
+
+/* Add these dark mode styles */
+body.dark-mode {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.dark-mode .app {
+  background-color: #1a1a1a;
+}
+
+.dark-mode .content {
+  background-color: #1a1a1a;
+}

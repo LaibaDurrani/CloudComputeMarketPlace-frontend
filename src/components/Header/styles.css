@@ -70,7 +70,7 @@
 }
 
 .header-nav a.active {
-  color: #007bff;
+  color: wheat;
   font-weight: 500;
 }
 
@@ -116,7 +116,7 @@
 }
 
 .add-computer-btn {
-  background-color: #2563eb;
+  background-color: #014247;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -127,5 +127,5 @@
 }
 
 .add-computer-btn:hover {
-  background-color: #1d4ed8;
+  background-color: #014247;
 }
