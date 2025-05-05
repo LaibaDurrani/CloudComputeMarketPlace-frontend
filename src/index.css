@@ -13,7 +13,7 @@ body {
   flex: 1;
   margin-left: 0;
   transition: margin-left 0.3s ease;
-  padding-top: 64px;
+  padding-top: 20px;
 }
 
 .sidebar-open .main-content {

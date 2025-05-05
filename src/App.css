@@ -8,16 +8,11 @@
 :root {
   --primary-color: #014247;
   --primary-hover: #014247;
-  --background-color: #f5f7fa;
+  --background-color: #f8f9fa;
   --text-primary: #1e293b;
   --text-secondary: #64748b;
   --border-color: #e2e8f0;
   --white: #ffffff;
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
 }
 
 body {
@@ -137,7 +132,6 @@ html {
 
 .content {
   margin-top: 64px;
-  padding: 20px;
   min-height: calc(100vh - 64px);
   width: 100%;
 }

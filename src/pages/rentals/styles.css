@@ -104,8 +104,9 @@
 .spec-item {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
+  padding: 8px 8px;
   border-bottom: 1px solid #e2e8f0;
+  border-radius: 15px;
 }
 
 .spec-label {
@@ -143,10 +144,6 @@
 .detail span:last-child {
   color: #1e293b;
   font-weight: 600;
-}
-
-.price {
-  color: #2563eb !important;
 }
 
 .rental-actions {

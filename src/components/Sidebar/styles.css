@@ -1,23 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.sidebar {
+  font-family: 'Poppins', sans-serif;
+}
+
 .sidebar {
   position: fixed;
   left: 0;
-  top: 64px; /* Adjust this value to match your navbar height */
-  height: calc(100vh - 64px); /* Subtract navbar height from total height */
+  top: 64px; 
+  height: calc(100vh - 64px); 
   width: 280px;
   background: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transform: translateX(-100%);
   transition: all 0.3s ease-in-out;
-  z-index: 999; /* Make sure this is lower than navbar z-index */
+  z-index: 999; 
 }
 
-/* Update overlay to also start below navbar */
 .sidebar-overlay {
   position: fixed;
-  top: 64px; /* Match sidebar top position */
+  top: 64px;
   left: 0;
   width: 100vw;
-  height: calc(100vh - 64px); /* Match sidebar height */
+  height: calc(100vh - 64px);
   background: rgba(0, 0, 0, 0.2);
   z-index: 998;
   opacity: 0;
@@ -41,11 +46,6 @@
   border-bottom: 1px solid #eaeaea;
 }
 
-.logo-section h2 {
-  color: #2563eb;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
 
 .sidebar-menu {
   flex: 1;
@@ -64,13 +64,13 @@
 }
 
 .menu-item:hover {
-  background: #f1f5ff;
-  color: #2563eb;
+  background: #edf5f6;
+  color: #014247;
 }
 
 .menu-item.active {
-  background: #e5edff;
-  color: #2563eb;
+  background: #edf5f6;
+  color: #014247;
   font-weight: 500;
 }
 
@@ -156,9 +156,9 @@
 }
 
 .switch-btn.active {
-  background: #2563eb;
+  background-color: var(--primary-color) !important;
   color: white;
-  border-color: #2563eb;
+  border-color: var(--primary-color) !important;
 }
 
 .switch-btn:hover:not(.active) {
