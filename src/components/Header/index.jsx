@@ -1,17 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSidebar } from '../../context/SidebarContext';
 import { useDashboardMode } from '../../context/DashboardModeContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaUserCircle } from 'react-icons/fa';
 import './styles.css';
 
 const Header = () => {
   const navigate = useNavigate();
   const { setIsSidebarOpen } = useSidebar();
   const { dashboardMode } = useDashboardMode();
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleLogout = () => {
-    // Add logout logic here (e.g., clear tokens, call logout API, etc.)
     console.log("Logging out...");
     navigate('/login');
   };
@@ -49,14 +61,17 @@ const Header = () => {
       </nav>
 
       <div className="header-actions">
-        <div
-          className="user-menu"
-          onClick={() => setIsUserMenuOpen(prev => !prev)}
-        >
-          <span className="user-label">User ▾</span>
-          {isUserMenuOpen && (
-            <div className="dropdown">
-              <Link to="/profile">Profile</Link>
+        <div className="user-menu" ref={dropdownRef}>
+          <div 
+            className="user-profile"
+            onClick={() => setShowDropdown(!showDropdown)}
+          >
+            <FaUserCircle className="user-icon" />
+          </div>
+          
+          {showDropdown && (
+            <div className="dropdown-menu">
+              <button onClick={() => navigate('/profile')}>Profile</button>
               <button onClick={handleLogout}>Logout</button>
             </div>
           )}

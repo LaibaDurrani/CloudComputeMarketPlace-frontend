@@ -1,70 +1,93 @@
 import React, { useState } from 'react';
 import { useSidebar } from '../../context/SidebarContext';
 import Header from '../../components/Header';
+import Sidebar from '../../components/Sidebar';
 import './styles.css';
-import '../../App.css';
 
 const RentalHistory = () => {
   const { isSidebarOpen } = useSidebar();
-  const [rentalHistory] = useState([
-    {
-      id: 1,
-      computerName: 'Deep Learning Workstation',
-      startDate: '2024-01-15',
-      endDate: '2024-01-16',
-      duration: '24 hours',
-      totalCost: 204.00,
-      status: 'Completed'
-    },
-    {
-      id: 2,
-      computerName: 'Gaming Rig Pro',
-      startDate: '2024-01-10',
-      endDate: '2024-01-11',
-      duration: '12 hours',
-      totalCost: 96.00,
-      status: 'Completed'
-    }
-  ]);
+  const [activeTab, setActiveTab] = useState('history'); // Add state for active tab
 
-  return (
-    <div className={`rental-history-page ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-      <Header />
-      <div className="rental-history-content">
-        <h1>Rental History</h1>
-        
-        <div className="history-table-container">
-          <table className="history-table">
-            <thead>
-              <tr>
-                <th>Computer</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Duration</th>
-                <th>Total Cost</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rentalHistory.map((rental) => (
-                <tr key={rental.id}>
-                  <td>{rental.computerName}</td>
-                  <td>{new Date(rental.startDate).toLocaleDateString()}</td>
-                  <td>{new Date(rental.endDate).toLocaleDateString()}</td>
-                  <td>{rental.duration}</td>
-                  <td>${rental.totalCost.toFixed(2)}</td>
-                  <td>
-                    <span className={`status-badge ${rental.status.toLowerCase()}`}>
-                      {rental.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+  const renderRentals = () => {
+    if (activeTab === 'active') {
+      return (
+        <div className="rentals-items">
+          <div className="rental-item">
+            <div className="rental-header">
+              <h3>Deep Learning Workstation</h3>
+              <span className="status active">Active</span>
+            </div>
+            <div className="rental-details">
+              <p>Date: Monday, May 5, 2025</p>
+              <p>Duration: 2 hours</p>
+              <button className="connect-btn">Connect Now</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="rentals-items">
+        <div className="rental-item">
+          <div className="rental-header">
+            <h3>Gaming PC</h3>
+            <span className="status completed">Completed</span>
+          </div>
+          <div className="rental-details">
+            <p>Date: Monday, May 1, 2025</p>
+            <p>Duration: 3 hours</p>
+            <p className="completion-time">Completed at: 5:00 PM</p>
+          </div>
         </div>
       </div>
-    </div>
+    );
+  };
+
+  return (
+    <>
+      <Header />
+      <Sidebar />
+      <div className={`page-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+        <div className="rentals-content">
+          <h1>Rental History</h1>
+          
+          <div className="rental-stats">
+            <div className="stat-card">
+              <h3>Total Rentals</h3>
+              <span className="stat-value">12</span>
+            </div>
+            <div className="stat-card">
+              <h3>Active Rentals</h3>
+              <span className="stat-value">2</span>
+            </div>
+            <div className="stat-card">
+              <h3>Completed Rentals</h3>
+              <span className="stat-value">10</span>
+            </div>
+          </div>
+
+          <div className="rentals-list">
+            <div className="rental-tabs">
+              <button 
+                className={`tab ${activeTab === 'active' ? 'active' : ''}`}
+                onClick={() => setActiveTab('active')}
+              >
+                Active
+              </button>
+              <button 
+                className={`tab ${activeTab === 'history' ? 'active' : ''}`}
+                onClick={() => setActiveTab('history')}
+              >
+                History
+              </button>
+            </div>
+            
+            {renderRentals()}
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
