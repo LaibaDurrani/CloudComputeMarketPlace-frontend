@@ -55,26 +55,37 @@ const Checkout = () => {
           <h1>Checkout</h1>
           
           <div className="checkout-grid">
-            <div className="main-content">
-              <section className="booking-summary">
-                <h2>Booking Summary</h2>
-                <div className="summary-details">
-                  <div className="summary-row">
-                    <span className="label">Computer:</span>
-                    <span className="value">{computerData?.name}</span>
-                  </div>
-                  <div className="summary-row">
-                    <span className="label">Date:</span>
-                    <span className="value">{bookingDetails?.date}</span>
-                  </div>
-                  <div className="summary-row">
-                    <span className="label">Duration:</span>
-                    <span className="value">{bookingDetails?.duration}</span>
-                  </div>
+            <section className="booking-summary">
+              <h2>Booking Summary</h2>
+              <div className="summary-details">
+                <div className="summary-row">
+                  <span className="label">Computer:</span>
+                  <span className="value">{computerData?.name}</span>
                 </div>
-              </section>
+                <div className="summary-row">
+                  <span className="label">Date:</span>
+                  <span className="value">{bookingDetails?.date}</span>
+                </div>
+                <div className="summary-row">
+                  <span className="label">Duration:</span>
+                  <span className="value">{bookingDetails?.duration}</span>
+                </div>
+                <div className="summary-row">
+                  <span className="label">Hours Selected:</span>
+                  <span className="value">{selectedSlots?.length || 0}</span>
+                </div>
+                <div className="summary-row">
+                  <span className="label">Rate per Hour:</span>
+                  <span className="value">${computerData?.price || 0}</span>
+                </div>
+                <div className="summary-row total">
+                  <span className="label">Total Amount:</span>
+                  <span className="value">${totalPrice || 0}</span>
+                </div>
+              </div>
+            </section>
 
-              <section className="payment-method">
+            <section className="payment-method">
                 <h2>Payment Method</h2>
                 <div className="payment-options">
                   <div className="payment-option">
@@ -152,34 +163,16 @@ const Checkout = () => {
                   </form>
                 )}
               </section>
-            </div>
 
-            <div className="sidebar">
-              <div className="price-summary-card">
-                <h2>Price Summary</h2>
-                <div className="price-details">
-                  <div className="price-row">
-                    <span>Hours Selected</span>
-                    <span>{selectedSlots?.length || 0}</span>
-                  </div>
-                  <div className="price-row">
-                    <span>Rate per Hour</span>
-                    <span>${computerData?.price || 0}</span>
-                  </div>
-                  <div className="price-row total">
-                    <span>Total Amount</span>
-                    <span>${totalPrice || 0}</span>
-                  </div>
-                </div>
-                <button 
-                  className="confirm-payment-btn"
-                  onClick={handlePaymentSubmit}
-                  disabled={!selectedSlots?.length}
-                >
-                  Confirm Payment
-                </button>
-              </div>
-            </div>
+            <section className="price-summary-card">
+              <button 
+                className="confirm-payment-btn"
+                onClick={handlePaymentSubmit}
+                disabled={!selectedSlots?.length}
+              >
+                Confirm Payment
+              </button>
+            </section>
           </div>
         </div>
       </div>

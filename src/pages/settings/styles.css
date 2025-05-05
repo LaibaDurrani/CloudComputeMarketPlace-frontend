@@ -84,7 +84,7 @@
 }
 
 .save-btn {
-  background: #16a34a;
+  background: var(--primary-color);
   color: white;
   border: none;
 }

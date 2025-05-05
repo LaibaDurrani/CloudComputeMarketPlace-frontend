@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSidebar } from '../../context/SidebarContext';
 import Header from '../../components/Header';
+import Sidebar from '../../components/Sidebar';
 import './styles.css';
 
 const Profile = () => {
@@ -19,9 +20,11 @@ const Profile = () => {
   });
 
   return (
+    <>
+    <Header />
+    <Sidebar />
     <div className={`profile-page ${isSidebarOpen ? 'sidebar-open' : ''}`}>
       <div className="profile-content">
-        <Header />
         <div className="profile-container">
           <div className="profile-header">
             <div className="profile-image">
@@ -87,6 +90,7 @@ const Profile = () => {
         </div>
       </div>
       </div>
+      </>
     );
 };
 

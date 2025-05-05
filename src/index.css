@@ -16,10 +16,6 @@ body {
   padding-top: 20px;
 }
 
-.sidebar-open .main-content {
-  margin-left: 280px;
-}
-
 .dashboard-content,
 .listings-container,
 .rentals-container {
