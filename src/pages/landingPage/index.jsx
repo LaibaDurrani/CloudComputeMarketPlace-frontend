@@ -17,6 +17,7 @@ import searchIcon from "../../assets/search.png";
 import groupIcon from "../../assets/group.png";
 import performanceIcon from "../../assets/performance.png";
 import PricingPage from "../pricingPage";
+import '../../App.css'; 
 
 const LandingPage = () => {
   const [isScrolled, setIsScrolled] = useState(false);

@@ -41,13 +41,14 @@ h1 {
 }
 
 /* Section Styles */
-section {
+.booking-summary, .payment-method {
   background: white;
   padding: 30px;;
   border-radius: 16px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  width: 100%;
+  width: 90%;
   margin: 0 auto;
+  margin-bottom: 20px;
 }
 
 /* Summary Details and Price Details */
@@ -169,6 +170,15 @@ section {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+}
+
+.booking-summary h2{
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+.payment-method h2{
+  font-size: 20px;
+  margin-bottom: 16px;
 }
 
 /* Responsive */

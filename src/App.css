@@ -13,6 +13,7 @@
   --text-secondary: #64748b;
   --border-color: #e2e8f0;
   --white: #ffffff;
+  --light-shade: #edf5f6;
 }
 
 body {
@@ -151,4 +152,8 @@ html {
   margin: 0;
   color: var(--text-primary);
   font-size: 1.75rem;
+}
+
+.section {
+  width: 100%;
 }

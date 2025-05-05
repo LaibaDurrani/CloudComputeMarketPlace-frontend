@@ -490,7 +490,7 @@
 }
 
 .explore-section {
-  padding: 4rem 2rem;
+  padding-top: 4rem;
   text-align: center;
   background: transparent;
   position: relative;
@@ -665,12 +665,12 @@
 }
 .cta-section {
   padding: 2rem 2rem;
-  margin: 4rem auto;
-  max-width: 1100px;
+  margin: 2rem auto;
+  max-width: 1800px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 16rem;
   background-color: #edf5f6;
   border-radius: 20px;
   position: relative;
@@ -725,7 +725,7 @@
 
 .stats-section {
   padding: 2rem 2rem;
-  background: linear-gradient(135deg, #edf5f6, #f8fafb);
+  background: #edf5f6;
 }
 
 .stats-container {

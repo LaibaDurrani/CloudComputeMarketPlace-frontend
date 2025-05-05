@@ -89,7 +89,7 @@ const ComputerDetails = () => {
 
           <div className="details-grid">
             <div className="main-content">
-              <section>
+              <section className='specs-section'>
                 <h2>Specifications</h2>
                 <div className="specs-grid">
                   {Object.entries(computerData.specs).map(([key, value]) => (
