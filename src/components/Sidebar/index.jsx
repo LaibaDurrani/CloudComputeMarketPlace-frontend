@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useSidebar } from '../../context/SidebarContext';
 import { useDashboardMode } from '../../context/DashboardModeContext';
 import { FaHome, FaList, FaShoppingCart, FaCog, FaChartBar, FaPlus, FaHistory } from 'react-icons/fa';
+import '../../App.css';  
 import './styles.css';
 
 const Sidebar = () => {

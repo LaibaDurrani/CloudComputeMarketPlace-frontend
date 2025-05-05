@@ -4,6 +4,7 @@ import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import { useSidebar } from '../../context/SidebarContext';
 import './styles.css';
+import { FaSearch } from 'react-icons/fa';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -47,12 +48,12 @@ const Dashboard = () => {
         <div className="dashboard-content">
           <div className="filters-section">
             <div className="filters-header">
-              <h2>Available Computers</h2>
+              <h3>Available Computers</h3>
               <p className="available-count">{computers.length} machines available</p>
             </div>
             <div className="search-filters">
               <div className="search-wrapper">
-                <i className="search-icon">🔍</i>
+              <FaSearch className="search-icon" />
                 <input 
                   type="text" 
                   placeholder="Search by specifications..."
@@ -81,7 +82,6 @@ const Dashboard = () => {
                 <div className="computer-header">
                   <div className="header-left">
                     <h3>{computer.name}</h3>
-                    <span className="owner">by {computer.owner}</span>
                   </div>
                   <span className="price">${computer.price}/hr</span>
                 </div>

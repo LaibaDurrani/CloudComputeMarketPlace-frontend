@@ -4,6 +4,7 @@ import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import { useSidebar } from '../../context/SidebarContext';
 import './styles.css';
+import '../../App.css'; 
 
 const MyRentals = () => {
   const navigate = useNavigate();

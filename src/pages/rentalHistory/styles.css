@@ -40,7 +40,7 @@
 }
 
 .history-table th {
-  background: #f8fafc;
+  background: var(--);
   color: #64748b;
   font-weight: 500;
 }

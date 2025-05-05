@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSidebar } from '../../context/SidebarContext';
 import Header from '../../components/Header';
 import './styles.css';
+import '../../App.css';
 
 const RentalHistory = () => {
   const { isSidebarOpen } = useSidebar();

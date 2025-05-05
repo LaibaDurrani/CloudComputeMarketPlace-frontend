@@ -6,7 +6,6 @@
 .page-container {
   min-height: 100vh;
   background-color: #f5f7fa;
-  padding-top: 64px;
 }
 
 .listings-wrapper {
@@ -178,10 +177,6 @@
 .stat span:last-child {
   color: #1e293b;
   font-weight: 600;
-}
-
-.price {
-  color: #2563eb !important;
 }
 
 .listing-actions {

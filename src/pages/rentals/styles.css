@@ -1,7 +1,7 @@
 .my-rentals {
   min-height: 100vh;
   background-color: #f5f7fa;
-  padding-top: 64px; /* Add padding for fixed header */
+  padding-top: 64px; 
 }
 
 .rentals-container {
@@ -104,8 +104,9 @@
 .spec-item {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
+  padding: 8px 8px;
   border-bottom: 1px solid #e2e8f0;
+  border-radius: 15px;
 }
 
 .spec-label {
@@ -123,7 +124,7 @@
   gap: 15px;
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8fafc;
+  background-color: var(--light-shade);
   border-radius: 8px;
 }
 
@@ -145,10 +146,6 @@
   font-weight: 600;
 }
 
-.price {
-  color: #2563eb !important;
-}
-
 .rental-actions {
   display: flex;
   gap: 12px;
@@ -166,7 +163,7 @@
 }
 
 .connect-btn {
-  background-color: #2563eb;
+  background-color: var(--primary-color);
   color: white;
 }
 

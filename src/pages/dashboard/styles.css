@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.page-container {
+  font-family: 'Poppins', sans-serif;
+}
+
 .page-container {
   margin-left: 0;
   transition: margin-left 0.3s ease;
   min-height: 100vh;
-  background-color: #f8fafc;
+  background-color: #f8f9fa;
 }
 
 .page-container.sidebar-open {
@@ -33,10 +39,38 @@
   margin-bottom: 20px;
 }
 
-.filters-header h2 {
-  margin: 0; /* Changed: removed all margins */
+.theme-toggle {
+  background: none;
+  border: none;
+  color: #014247;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  margin-right: 15px;
+}
+
+.theme-toggle:hover {
+  background: rgba(1, 66, 71, 0.1);
+}
+
+.dark .theme-toggle {
+  color: #39FF14;
+}
+
+.dark .theme-toggle:hover {
+  background: rgba(57, 255, 20, 0.1);
+}
+
+.filters-header h3 {
+  margin: 0;
   color: #1e293b;
-  font-size: 28px;
+  font-size: 35px;
+  font-weight: 500;
 }
 
 .available-count {
@@ -74,7 +108,7 @@
 }
 
 .search-input:focus {
-  border-color: #2563eb;
+  border-color: #014247;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
@@ -90,7 +124,7 @@
 }
 
 .filter-select:focus {
-  border-color: #2563eb;
+  border-color: #014247;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
@@ -135,13 +169,13 @@
 }
 
 .price {
-  color: #2563eb;
+  color: #014247;
   font-weight: 600;
-  font-size: 22px;
+  font-size: 14px;
 }
 
 .specs-list {
-  background-color: #f8fafc;
+  background-color: #edf5f6;
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 24px;
@@ -151,6 +185,7 @@
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
+  background-color: #edf5f6;
 }
 
 .spec-item:not(:last-child) {
@@ -175,8 +210,8 @@
 }
 
 .use-case-tag {
-  background-color: #e5edff;
-  color: #2563eb;
+  background-color: #edf5f6;
+  color: #014247;
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 14px;
@@ -205,7 +240,7 @@
 }
 
 .rent-btn {
-  background-color: #2563eb;
+  background-color: #014247;
   color: white;
   border: none;
 }
@@ -215,7 +250,78 @@
 }
 
 .rent-btn:hover {
-  background-color: #1d4ed8;
+  background-color: #014247;
+}
+
+.filters-header h2 {
+  color: #014247;
+  font-weight: 700;
+}
+
+.computer-card {
+  border: 1px solid rgba(1, 66, 71, 0.1);
+  transition: all 0.3s ease;
+}
+
+.computer-card:hover {
+  border-color: #014247;
+  transform: translateY(-10px);
+}
+
+.header-left h3 {
+  color: #014247;
+}
+
+.use-case-tag {
+  background: linear-gradient(135deg, rgba(0, 106, 113, 0.1), rgba(245, 222, 179, 0.1));
+  color: #006A71;
+  border: 1px solid rgba(0, 106, 113, 0.2);
+}
+
+.details-btn {
+  background: #014247;
+  color: white;
+}
+
+.details-btn:hover {
+  background: #006A71;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 106, 113, 0.2);
+}
+
+/* Dark mode adjustments */
+.dark .page-container {
+  background: #1a1a1a;
+}
+
+.dark .computer-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(57, 255, 20, 0.2);
+}
+
+.dark .header-left h3,
+.dark .spec-value {
+  color: #39FF14;
+}
+
+.dark .price {
+  color: #39FF14;
+}
+
+.dark .use-case-tag {
+  background: rgba(57, 255, 20, 0.1);
+  color: #39FF14;
+  border-color: rgba(57, 255, 20, 0.2);
+}
+
+.dark .filters-header h2 {
+  color: #39FF14;
+}
+
+.dark .available-count,
+.dark .spec-label,
+.dark .owner {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 @media (max-width: 768px) {
