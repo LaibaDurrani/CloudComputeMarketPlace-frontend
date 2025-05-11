@@ -31,6 +31,7 @@ export const getCurrentUser = () => api.get('/api/auth/me');
 // Profile API calls
 export const updateProfile = (profileData) => api.put('/api/profile', profileData);
 export const updatePassword = (passwordData) => api.put('/api/profile/password', passwordData);
+export const deleteAccount = () => api.delete('/api/profile');
 export const getUserComputers = () => api.get('/api/profile/computers');
 export const getUserRentals = () => api.get('/api/profile/rentals');
 export const getRentedOutComputers = () => api.get('/api/profile/rentedout');
@@ -43,7 +44,17 @@ export const updateComputer = (id, computerData) => api.put(`/api/computers/${id
 export const deleteComputer = (id) => api.delete(`/api/computers/${id}`);
 
 // Rentals API calls
-export const createRental = (rentalData) => api.post('/api/rentals', rentalData);
+export const createRental = async (rentalData) => {
+  try {
+    console.log('Creating rental with data:', rentalData);
+    const response = await api.post('/api/rentals', rentalData);
+    console.log('Rental creation successful:', response.data);
+    return response;
+  } catch (error) {
+    console.error('Rental creation error:', error.response?.data || error.message);
+    throw error;
+  }
+};
 export const getRental = (id) => api.get(`/api/rentals/${id}`);
 export const updateRentalStatus = (id, status) => api.put(`/api/rentals/${id}`, { status });
 export const addRentalAccessDetails = (id, accessDetails) => api.put(`/api/rentals/${id}/access`, accessDetails);

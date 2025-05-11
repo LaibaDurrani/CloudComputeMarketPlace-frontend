@@ -5,7 +5,8 @@ const {
   getUserComputers,
   getUserRentals,
   getRentedOutComputers,
-  updatePassword
+  updatePassword,
+  deleteAccount
 } = require('../../controllers/profileController');
 const validate = require('../../middleware/validator');
 const { protect } = require('../../middleware/auth');
@@ -45,5 +46,8 @@ router.put(
   validate,
   updatePassword
 );
+
+// Delete account
+router.delete('/', deleteAccount);
 
 module.exports = router;

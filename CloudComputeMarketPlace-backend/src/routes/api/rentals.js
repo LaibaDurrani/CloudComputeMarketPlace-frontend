@@ -26,8 +26,9 @@ router.post(
   '/',
   [
     check('computerId', 'Computer ID is required').not().isEmpty(),
-    check('startDate', 'Start date is required').isDate(),
-    check('endDate', 'End date is required').isDate(),
+    // More flexible date validation - just check that the field exists
+    check('startDate', 'Start date is required').exists().notEmpty(),
+    check('endDate', 'End date is required').exists().notEmpty(),
     check('rentalType', 'Rental type must be hourly, daily, weekly, or monthly')
       .isIn(['hourly', 'daily', 'weekly', 'monthly']),
   ],

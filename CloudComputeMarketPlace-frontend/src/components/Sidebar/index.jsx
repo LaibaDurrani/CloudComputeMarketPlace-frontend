@@ -11,19 +11,18 @@ const Sidebar = () => {
   const location = useLocation();
   const { isSidebarOpen } = useSidebar();
   const { dashboardMode, setDashboardMode } = useDashboardMode();
-
   const buyerMenuItems = [
     { icon: <FaHome />, label: 'Dashboard', path: '/dashboard' },
     { icon: <FaShoppingCart />, label: 'My Rentals', path: '/rentals' },
     { icon: <FaHistory />, label: 'Rental History', path: '/rental-history' },
-    { icon: <FaCog />, label: 'Settings', path: '/settings' }
+    { icon: <FaCog />, label: 'Settings', path: '/profile' }
   ];
   const sellerMenuItems = [
     { icon: <FaChartBar />, label: 'Seller Dashboard', path: '/seller-dashboard' },
     { icon: <FaList />, label: 'My Listings', path: '/mylistings' }, // Fixed path to match route
     { icon: <FaPlus />, label: 'Add Computer', path: '/add-computer' },
     { icon: <FaHistory />, label: 'Rental Requests', path: '/rental-history' }, // Using existing route for now
-    { icon: <FaCog />, label: 'Settings', path: '/settings' } // Using main settings page
+    { icon: <FaCog />, label: 'Settings', path: '/profile' } // Changed to profile page
   ];
 
   const currentMenuItems = dashboardMode === 'buyer' ? buyerMenuItems : sellerMenuItems;

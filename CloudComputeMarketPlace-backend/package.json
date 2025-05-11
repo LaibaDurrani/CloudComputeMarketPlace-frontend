@@ -2,13 +2,13 @@
   "name": "cloudcomputemarketplace-backend",
   "version": "1.0.0",
   "description": "Backend for Cloud Compute MarketPlace",
-  "main": "src/server.js",
-  "scripts": {
+  "main": "src/server.js",  "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "jest",
     "data:import": "node src/seeds/seedDatabase.js -i",
-    "data:delete": "node src/seeds/seedDatabase.js -d"
+    "data:delete": "node src/seeds/seedDatabase.js -d",
+    "seed:access": "node src/seeds/addAccessDetails.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

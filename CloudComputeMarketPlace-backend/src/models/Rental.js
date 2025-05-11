@@ -40,7 +40,7 @@ const RentalSchema = new mongoose.Schema({
   },  paymentInfo: {
     method: {
       type: String,
-      enum: ['credit_card', 'paypal', 'crypto', 'other'],
+      enum: ['credit_card', 'paypal', 'crypto', 'automatic', 'other'],
     },
     transactionId: String,
     isPaid: {

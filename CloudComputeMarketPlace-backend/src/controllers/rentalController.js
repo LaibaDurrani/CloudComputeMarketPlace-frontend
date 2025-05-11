@@ -69,17 +69,58 @@ exports.getRental = async (req, res) => {
 // @desc    Create new rental
 // @route   POST /api/rentals
 // @access  Private
-exports.createRental = async (req, res) => {
-  try {
-    const { computerId, startDate, endDate, rentalType } = req.body;
-
-    // Find the computer
+exports.createRental = async (req, res) => {  try {
+    const { computerId, startDate: startDateString, endDate: endDateString, rentalType } = req.body;
+    
+    // Convert date strings to Date objects to ensure they're valid
+    let startDate, endDate;
+    try {
+      startDate = new Date(startDateString);
+      endDate = new Date(endDateString);
+      
+      // Verify dates are valid
+      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+        return res.status(400).json({
+          success: false,
+          error: 'Invalid date format provided'
+        });
+      }
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        error: 'Error parsing dates: ' + error.message
+      });
+    }
+      // Enhanced debug logs
+    console.log('Creating rental with data:', { 
+      computerId, 
+      startDate: startDate.toISOString(), 
+      endDate: endDate.toISOString(), 
+      rentalType 
+    });
+    console.log('User in request:', req.user?.id);
+    
+    // Validate user authentication
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        success: false,
+        error: 'User authentication failed. Please log in again.'
+      });
+    }    // Find the computer
     const computer = await Computer.findById(computerId);
 
     if (!computer) {
       return res.status(404).json({
         success: false,
         error: 'Computer not found'
+      });
+    }
+    
+    // Validate computer data
+    if (!computer.availability) {
+      return res.status(400).json({
+        success: false,
+        error: 'Computer availability data is missing'
       });
     }
 
@@ -89,47 +130,95 @@ exports.createRental = async (req, res) => {
         success: false,
         error: `Computer is currently ${computer.availability.status}`
       });
+    }    // Check if user is not renting their own computer
+    if (!computer.user) {
+      return res.status(400).json({
+        success: false,
+        error: 'Computer ownership data is missing'
+      });
     }
-
-    // Check if user is not renting their own computer
+    
     if (computer.user.toString() === req.user.id) {
       return res.status(400).json({
         success: false,
         error: 'You cannot rent your own computer'
       });
+    }    // Verify computer has price information
+    if (!computer.price) {
+      return res.status(400).json({
+        success: false,
+        error: 'Computer pricing information is missing'
+      });
     }
-
+    
     // Calculate total price based on rental type and computer pricing
     let totalPrice;
-    switch (rentalType) {
-      case 'hourly':
-        // Calculate hours between startDate and endDate
-        const hours = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60));
-        totalPrice = computer.price.hourly * hours;
-        break;
-      case 'daily':
-        // Calculate days between startDate and endDate
-        const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
-        totalPrice = computer.price.daily * days;
-        break;
-      case 'weekly':
-        // Calculate weeks between startDate and endDate
-        const weeks = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24 * 7));
-        totalPrice = computer.price.weekly * weeks;
-        break;
-      case 'monthly':
-        // Calculate months between startDate and endDate (approximate)
-        const months = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24 * 30));
-        totalPrice = computer.price.monthly * months;
-        break;
-      default:
+    try {
+      switch (rentalType) {
+        case 'hourly':
+          if (computer.price.hourly === undefined || computer.price.hourly === null) {
+            return res.status(400).json({
+              success: false,
+              error: 'Hourly price not set for this computer'
+            });
+          }
+          // Calculate hours between startDate and endDate
+          const hours = Math.ceil((endDate - startDate) / (1000 * 60 * 60));
+          totalPrice = computer.price.hourly * hours;
+          break;
+        case 'daily':
+          if (computer.price.daily === undefined || computer.price.daily === null) {
+            return res.status(400).json({
+              success: false,
+              error: 'Daily price not set for this computer'
+            });
+          }
+          // Calculate days between startDate and endDate
+          const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+          totalPrice = computer.price.daily * days;
+          break;
+        case 'weekly':
+          if (computer.price.weekly === undefined || computer.price.weekly === null) {
+            return res.status(400).json({
+              success: false,
+              error: 'Weekly price not set for this computer'
+            });
+          }
+          // Calculate weeks between startDate and endDate
+          const weeks = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24 * 7));
+          totalPrice = computer.price.weekly * weeks;
+          break;
+        case 'monthly':
+          if (computer.price.monthly === undefined || computer.price.monthly === null) {
+            return res.status(400).json({
+              success: false,
+              error: 'Monthly price not set for this computer'
+            });
+          }
+          // Calculate months between startDate and endDate (approximate)
+          const months = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24 * 30));
+          totalPrice = computer.price.monthly * months;
+          break;
+        default:
+          return res.status(400).json({
+            success: false,
+            error: 'Invalid rental type'
+          });
+      }
+      
+      // Validate calculated price
+      if (isNaN(totalPrice) || totalPrice <= 0) {
         return res.status(400).json({
           success: false,
-          error: 'Invalid rental type'
+          error: 'Error calculating price. Please check dates and try again.'
         });
-    }
-
-    // Create rental
+      }
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        error: 'Error calculating price: ' + error.message
+      });
+    }// Create rental with auto-approved payment
     const rental = await Rental.create({
       computer: computerId,
       renter: req.user.id,
@@ -138,22 +227,46 @@ exports.createRental = async (req, res) => {
       endDate,
       rentalType,
       totalPrice,
-      status: 'pending'
+      status: 'active', // Set to active instead of pending to bypass payment check
+      paymentInfo: {
+        method: 'automatic', // This now matches our updated enum in the Rental model
+        transactionId: `auto_${Date.now()}`,
+        isPaid: true,
+        paidAt: new Date()
+      }
     });
 
     // Update computer availability status
     computer.availability.status = 'rented';
-    await computer.save();
-
-    res.status(201).json({
+    await computer.save();    res.status(201).json({
       success: true,
       data: rental
     });
   } catch (err) {
-    console.error(err);
+    console.error('Error creating rental:', err);
+    
+    // Check for validation errors (Mongoose validation)
+    if (err.name === 'ValidationError') {
+      const errors = Object.values(err.errors).map(error => error.message);
+      return res.status(400).json({
+        success: false,
+        error: 'Validation error',
+        details: errors.join(', ')
+      });
+    }
+    
+    // Check for cast errors (e.g., invalid MongoDB ID)
+    if (err.name === 'CastError') {
+      return res.status(400).json({
+        success: false,
+        error: `Invalid ${err.path}: ${err.value}`
+      });
+    }
+
     res.status(500).json({
       success: false,
-      error: 'Server error'
+      error: 'Server error',
+      message: process.env.NODE_ENV === 'development' ? err.message : undefined
     });
   }
 };
@@ -191,10 +304,18 @@ exports.updateRentalStatus = async (req, res) => {
           error: 'Not authorized to update this rental'
         });
       }
-    }
-
-    // Update rental status
+    }    // Update rental status
     rental.status = status;
+      // Automatically set payment as completed when activating a rental
+    if (status === 'active' && (!rental.paymentInfo || !rental.paymentInfo.isPaid)) {
+      rental.paymentInfo = {
+        method: 'automatic', // Matches our updated enum in the Rental model
+        transactionId: `auto_${Date.now()}`,
+        isPaid: true,
+        paidAt: new Date()
+      };
+    }
+    
     await rental.save();
 
     // If rental is cancelled or completed, update computer availability

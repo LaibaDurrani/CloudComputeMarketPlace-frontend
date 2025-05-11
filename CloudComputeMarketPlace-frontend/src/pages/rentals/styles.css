@@ -22,6 +22,10 @@
   position: relative;
   width: 100%;
   padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  background-color: var(--background-color, #f8f9fa);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .iframe-container iframe {
@@ -32,57 +36,30 @@
   height: 100%;
   border: none;
   border-radius: 8px;
+  background-color: var(--light-shade, #edf5f6);
 }
 
-.fullscreen-btn {
+.connection-details {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
-  padding: 8px 16px;
-  background: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(1, 66, 71, 0.9);
   color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  padding: 10px;
   z-index: 10;
+  border-radius: 8px 8px 0 0;
 }
 
-.rentals-list {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  padding: 20px;
-}
-
-.rental-item {
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-  transition: all 0.3s ease;
-}
-
-.rental-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: var(--primary-color);
-}
-
-.connect-btn {
-  margin-top: 12px;
-  padding: 8px 16px;
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.connect-btn:hover {
-  background: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+.no-connection {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #64748b;
+  width: 80%;
+  z-index: 5;
 }
 
 .fullscreen-btn {
@@ -102,6 +79,142 @@
 .fullscreen-btn:hover {
   background: rgba(0, 0, 0, 0.9);
   transform: scale(1.05);
+}
+
+.fullscreen-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.rentals-list {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+.rental-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  position: relative;
+}
+
+.rental-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-color);
+}
+
+.rental-item.selected {
+  border: 2px solid var(--primary-color);
+  background-color: rgba(var(--primary-color-rgb), 0.05);
+}
+
+.rental-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.rental-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #1a202c;
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status.active {
+  background-color: rgba(1, 66, 71, 0.1);
+  color: var(--primary-color);
+}
+
+.status.pending {
+  background-color: rgba(237, 137, 54, 0.1);
+  color: #d69e2e;
+}
+
+.status.completed {
+  background-color: rgba(113, 128, 150, 0.1);
+  color: #718096;
+}
+
+.status.cancelled {
+  background-color: rgba(229, 62, 62, 0.1);
+  color: #e53e3e;
+}
+
+.rental-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rental-details p {
+  margin: 0;
+  font-size: 14px;
+  color: #4a5568;
+}
+
+.connect-btn {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: fit-content;
+  font-weight: 500;
+}
+
+.connect-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(1, 66, 71, 0.2);
+}
+
+.connect-btn:disabled {
+  background-color: #cbd5e0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.fullscreen-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 8px 16px;
+  background: rgba(1, 66, 71, 0.8);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.fullscreen-btn:hover {
+  background: var(--primary-color);
+}
+
+.fullscreen-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .rental-header {
@@ -148,6 +261,116 @@
 
 .connect-btn:hover {
   background: var(--primary-hover);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  color: #718096;
+}
+
+.error-message {
+  background-color: #fed7d7;
+  color: #e53e3e;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #feb2b2;
+}
+
+.no-rentals {
+  text-align: center;
+  padding: 30px 0;
+  color: #718096;
+}
+
+.no-rentals p:first-child {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* Use the existing theme colors from the main App.css */
+:root {
+  --primary-color: #014247;
+  --primary-color-rgb: 1, 66, 71;
+  --primary-hover: #02565c;
+}
+
+/* Tabs styling */
+.tabs-container {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab {
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #64748b;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--primary-color);
+}
+
+.tab.active {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  font-weight: 600;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  font-size: 11px;
+  background: var(--primary-color);
+  color: var(--white);
+  border-radius: 9px;
+  padding: 0 6px;
+  margin-left: 6px;
+}
+
+.rental-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.status-message {
+  font-size: 14px;
+  color: #718096;
+  font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .rentals-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .screen-share-section {
+    order: 2;
+  }
+  
+  .rentals-list {
+    order: 1;
+  }
 }
 
 @media (max-width: 1024px) {

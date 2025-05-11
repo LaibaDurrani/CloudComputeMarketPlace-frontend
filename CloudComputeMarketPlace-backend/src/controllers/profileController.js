@@ -70,13 +70,23 @@ exports.getUserComputers = async (req, res) => {
 exports.getUserRentals = async (req, res) => {
   try {
     const rentals = await Rental.find({ renter: req.user.id })
-      .populate('computer', 'title description specs price')
-      .populate('owner', 'name email');
+      .populate('computer', 'title description specs price photos')
+      .populate('owner', 'name email profilePicture');
+
+    // Sort rentals by status and date - active first, then by start date
+    const sortedRentals = rentals.sort((a, b) => {
+      // First sort by status - active comes first
+      if (a.status === 'active' && b.status !== 'active') return -1;
+      if (a.status !== 'active' && b.status === 'active') return 1;
+      
+      // Then sort by start date (most recent first)
+      return new Date(b.startDate) - new Date(a.startDate);
+    });
 
     res.status(200).json({
       success: true,
-      count: rentals.length,
-      data: rentals
+      count: sortedRentals.length,
+      data: sortedRentals
     });
   } catch (err) {
     console.error(err);
@@ -129,11 +139,43 @@ exports.updatePassword = async (req, res) => {
     }
 
     user.password = newPassword;
-    await user.save();
+    await user.save();    res.status(200).json({
+      success: true,
+      message: 'Password updated successfully'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      error: 'Server error'
+    });
+  }
+};
+
+// @desc    Delete user account
+// @route   DELETE /api/profile
+// @access  Private
+exports.deleteAccount = async (req, res) => {
+  try {
+    // Find user by ID and delete
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: 'User not found'
+      });
+    }
+
+    // Delete all computers owned by the user
+    await Computer.deleteMany({ user: req.user.id });
+
+    // Delete the user
+    await User.findByIdAndDelete(req.user.id);
 
     res.status(200).json({
       success: true,
-      message: 'Password updated successfully'
+      message: 'Account deleted successfully'
     });
   } catch (err) {
     console.error(err);

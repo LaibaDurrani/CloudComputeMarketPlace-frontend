@@ -272,7 +272,7 @@ const generateComputers = (userIds) => {
       title = `High-Performance Computing System`;
       description = `Versatile and powerful computing solution for demanding tasks. Equipped with ${cpu}, ${gpu}, and ${ram} for excellent all-around performance.`;
     }    // Ensure title is within the 50 character limit
-    const truncatedTitle = title.length > 45 ? title.substring(0, 45) + '...' : title;
+    const truncatedTitle = title.length > 45 ? title.substring(0, 45) : title;
     
     // Create computer object
     const computer = {
@@ -395,7 +395,7 @@ const generateRentals = (users, computers) => {
     // Random payment method
     const paymentMethod = paymentMethods[Math.floor(Math.random() * paymentMethods.length)];
     
-    // Create rental object
+  // Create rental object
     const rental = {
       computer: computer._id,
       renter: buyer._id,
@@ -411,6 +411,15 @@ const generateRentals = (users, computers) => {
         isPaid: status !== 'pending',
         paidAt: status !== 'pending' ? startDate : null
       },
+      // Add access details for active rentals with 30% probability
+      ...(status === 'active' && Math.random() > 0.7 && {
+        accessDetails: {
+          ipAddress: `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`,
+          username: `user_${Math.random().toString(36).substring(2, 8)}`,
+          password: `pass_${Math.random().toString(36).substring(2, 8)}`,
+          accessUrl: `https://remote-${Math.random().toString(36).substring(2, 8)}.example.com`
+        }
+      }),
       createdAt: new Date(startDate.getTime() - Math.floor(Math.random() * 24 * 60 * 60 * 1000)), // 1 day before start date
     };
     
@@ -485,7 +494,158 @@ const importData = async () => {
     // Generate and insert rentals
     const rentalData = generateRentals(createdUsers, createdComputers);
     const createdRentals = await Rental.insertMany(rentalData);
-    console.log(`${createdRentals.length} rentals created...`);    // Update computers with reviews
+    console.log(`${createdRentals.length} rentals created...`);
+    
+    // Create specific test cases for the access details feature
+    // Find users for our test scenarios
+    const johnUser = createdUsers.find(user => user.email === 'john@example.com');
+    const adminUser = createdUsers.find(user => user.email === 'admin@example.com');
+    const bobUser = createdUsers.find(user => user.email === 'bob@example.com');
+    
+    if (johnUser && adminUser && bobUser) {
+      console.log('Creating specific test rentals to demonstrate access details feature...');
+        // --------------------------------------------------------------
+      // 1. Create a high-performance GPU server for John (as seller)
+      // --------------------------------------------------------------
+      const johnComputer = new Computer({
+        user: johnUser._id,
+        title: "High-Performance GPU Server",
+        description: "A powerful GPU server with NVIDIA RTX 4090 for machine learning, rendering, and other GPU-intensive tasks. Perfect for AI model training and inference. This listing has complete remote access details for the buyer.",
+        specs: {
+          cpu: "AMD Ryzen 9 7950X",
+          gpu: "NVIDIA RTX 4090",
+          ram: "128GB DDR5-6000",
+          storage: "4TB NVMe SSD",
+          operatingSystem: "Ubuntu 22.04 LTS",
+        },
+        location: "New York, USA",
+        price: {
+          hourly: 5.99,
+          daily: 99.99,
+          weekly: 599.99,
+          monthly: 1999.99,
+        },
+        availability: {
+          status: 'rented',
+        },
+        categories: ["AI & Machine Learning", "3D Rendering", "Scientific Computing"],
+        photos: [
+          "https://source.unsplash.com/random/300x200?server,gpu&sig=1",
+          "https://source.unsplash.com/random/300x200?computer,hardware&sig=2",
+          "https://source.unsplash.com/random/300x200?nvidia,gpu&sig=3"
+        ],
+        averageRating: 4.9,
+        reviews: [],
+        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
+      });
+      
+      const savedComputer = await johnComputer.save();
+      console.log('Test computer created for John');
+        // --------------------------------------------------------------
+      // 2. Create a second computer for John without access details yet
+      // --------------------------------------------------------------
+      const johnComputer2 = new Computer({
+        user: johnUser._id,
+        title: "Web Development Workstation (No Access Yet)",
+        description: "A dedicated workstation optimized for web development and software engineering tasks. This rental is active but the seller hasn't provided access details yet.",
+        specs: {
+          cpu: "Intel Core i7-13700K",
+          gpu: "NVIDIA RTX 4070",
+          ram: "64GB DDR5-5600",
+          storage: "2TB NVMe SSD",
+          operatingSystem: "Windows 11 Pro",
+        },
+        location: "San Francisco, USA",
+        price: {
+          hourly: 3.99,
+          daily: 59.99,
+          weekly: 349.99,
+          monthly: 1199.99,
+        },
+        availability: {
+          status: 'rented',
+        },
+        categories: ["Software Development", "Web Development"],
+        photos: [
+          "https://source.unsplash.com/random/300x200?workstation,computer&sig=4",
+          "https://source.unsplash.com/random/300x200?developer,desk&sig=5",
+        ],
+        averageRating: 4.7,
+        reviews: [],
+        createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000), // 20 days ago
+      });
+      
+      const savedComputer2 = await johnComputer2.save();
+      console.log('Second test computer created for John (without access details)');
+      
+      // --------------------------------------------------------------
+      // 3. Create an active rental between John and Admin with complete access details
+      // --------------------------------------------------------------
+      const now = new Date();
+      const oneWeekLater = new Date(now);
+      oneWeekLater.setDate(oneWeekLater.getDate() + 7);
+      
+      const testRental = new Rental({
+        computer: savedComputer._id,
+        renter: adminUser._id,
+        owner: johnUser._id,
+        startDate: now,
+        endDate: oneWeekLater,
+        rentalType: 'weekly',
+        totalPrice: 599.99,
+        status: 'active',
+        paymentInfo: {
+          method: 'credit_card',
+          transactionId: 'test_transaction_123456',
+          isPaid: true,
+          paidAt: now
+        },
+        accessDetails: {
+          ipAddress: '123.45.67.89',
+          username: 'admin_user',
+          password: 'P@ssw0rd!23',
+          accessUrl: 'https://remote-access.example.com/connect'
+        },
+        createdAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+      });
+      
+      await testRental.save();
+      console.log('Test rental created between John (seller) and Admin (buyer) with complete access details');
+      
+      // --------------------------------------------------------------
+      // 4. Create a second active rental between John and Bob without access details
+      // --------------------------------------------------------------
+      const twoDaysAgo = new Date(now);
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+      
+      const thirtyDaysLater = new Date(now);
+      thirtyDaysLater.setDate(thirtyDaysLater.getDate() + 30);
+      
+      const testRental2 = new Rental({
+        computer: savedComputer2._id,
+        renter: bobUser._id,
+        owner: johnUser._id,
+        startDate: twoDaysAgo,
+        endDate: thirtyDaysLater,
+        rentalType: 'monthly',
+        totalPrice: 1199.99,
+        status: 'active',
+        paymentInfo: {
+          method: 'paypal',
+          transactionId: 'test_transaction_567890',
+          isPaid: true,
+          paidAt: twoDaysAgo
+        },
+        // No access details yet - this will demonstrate the case where the seller needs to add them
+        createdAt: new Date(twoDaysAgo.getTime() - 1 * 24 * 60 * 60 * 1000), // 3 days ago
+      });
+      
+      await testRental2.save();
+      console.log('Second test rental created between John (seller) and Bob (buyer) without access details');
+      
+    } else {
+      console.log('Could not find required users for test case creation');
+    }// Update computers with reviews
     for (const computer of computerData) {
       if (computer.reviews && computer.reviews.length > 0) {
         await Computer.findByIdAndUpdate(computer._id, { 
