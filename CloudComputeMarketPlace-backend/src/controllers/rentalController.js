@@ -216,3 +216,56 @@ exports.updateRentalStatus = async (req, res) => {
     });
   }
 };
+
+// @desc    Add access details to a rental
+// @route   PUT /api/rentals/:id/access
+// @access  Private (Only owner)
+exports.addAccessDetails = async (req, res) => {
+  try {
+    const { ipAddress, username, password, accessUrl } = req.body;
+
+    const rental = await Rental.findById(req.params.id);
+
+    if (!rental) {
+      return res.status(404).json({
+        success: false,
+        error: 'Rental not found'
+      });
+    }
+
+    // Only the owner can add access details
+    if (rental.owner.toString() !== req.user.id) {
+      return res.status(401).json({
+        success: false,
+        error: 'Not authorized to add access details to this rental'
+      });
+    }
+
+    // Add access details
+    rental.accessDetails = {
+      ipAddress,
+      username,
+      password, // Note: In a production app, you should encrypt this password
+      accessUrl
+    };
+
+    await rental.save();
+
+    // Don't return the password in the response
+    const rentalResponse = rental.toObject();
+    if (rentalResponse.accessDetails) {
+      rentalResponse.accessDetails.password = undefined;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: rentalResponse
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      error: 'Server error'
+    });
+  }
+};

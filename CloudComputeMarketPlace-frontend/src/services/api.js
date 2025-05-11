@@ -46,5 +46,6 @@ export const deleteComputer = (id) => api.delete(`/api/computers/${id}`);
 export const createRental = (rentalData) => api.post('/api/rentals', rentalData);
 export const getRental = (id) => api.get(`/api/rentals/${id}`);
 export const updateRentalStatus = (id, status) => api.put(`/api/rentals/${id}`, { status });
+export const addRentalAccessDetails = (id, accessDetails) => api.put(`/api/rentals/${id}/access`, accessDetails);
 
 export default api;

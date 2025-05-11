@@ -4,7 +4,7 @@ import { useDashboardMode } from '../../context/DashboardModeContext';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { getUserRentals, getRentedOutComputers, updateRentalStatus, getUserComputers } from '../../services/api';
+import { getUserRentals, getRentedOutComputers, updateRentalStatus, getUserComputers, addRentalAccessDetails } from '../../services/api';
 import './styles.css';
 
 const RentalHistory = () => {
@@ -15,6 +15,14 @@ const RentalHistory = () => {
   const [computers, setComputers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showAccessForm, setShowAccessForm] = useState(false);
+  const [selectedRental, setSelectedRental] = useState(null);
+  const [accessDetails, setAccessDetails] = useState({
+    ipAddress: '',
+    username: '',
+    password: '',
+    accessUrl: ''
+  });
   const [stats, setStats] = useState({
     total: 0,
     active: 0,
@@ -68,8 +76,7 @@ const RentalHistory = () => {
     };
     
     fetchRentals();
-  }, [dashboardMode]);
-  const handleUpdateRentalStatus = async (rentalId, status) => {
+  }, [dashboardMode]);  const handleUpdateRentalStatus = async (rentalId, status) => {
     try {
       await updateRentalStatus(rentalId, status);
       
@@ -77,7 +84,6 @@ const RentalHistory = () => {
       setRentals(rentals.map(rental => 
         rental._id === rentalId ? { ...rental, status } : rental
       ));
-      
       // Update stats after status change
       if (status === 'active') {
         setStats({
@@ -125,6 +131,87 @@ const RentalHistory = () => {
   const handleCompleteRental = (rentalId) => {
     handleUpdateRentalStatus(rentalId, 'completed');
   };
+
+  const handleShowAccessForm = (rental) => {
+    setSelectedRental(rental);
+    
+    // Pre-fill form if access details already exist
+    if (rental.accessDetails) {
+      setAccessDetails({
+        ipAddress: rental.accessDetails.ipAddress || '',
+        username: rental.accessDetails.username || '',
+        password: '', // Don't pre-fill password for security
+        accessUrl: rental.accessDetails.accessUrl || ''
+      });
+    } else {
+      // Reset form
+      setAccessDetails({
+        ipAddress: '',
+        username: '',
+        password: '',
+        accessUrl: ''
+      });
+    }
+    
+    setShowAccessForm(true);
+  };
+
+  const handleCloseAccessForm = () => {
+    setShowAccessForm(false);
+    setSelectedRental(null);
+  };
+
+  const handleAccessDetailsChange = (e) => {
+    const { name, value } = e.target;
+    setAccessDetails(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmitAccessDetails = async (e) => {
+    e.preventDefault();
+    
+    if (!selectedRental) return;
+    
+    try {
+      await addRentalAccessDetails(selectedRental._id, accessDetails);
+      
+      // Update the rentals list
+      setRentals(rentals.map(rental => 
+        rental._id === selectedRental._id 
+          ? { 
+              ...rental, 
+              accessDetails: {
+                ...accessDetails,
+                password: undefined // Don't store password in state
+              } 
+            } 
+          : rental
+      ));
+      
+      setShowAccessForm(false);
+      setSelectedRental(null);
+      
+      // Show success message (you could add a toast/notification here)
+      alert('Access details saved successfully');
+    } catch (err) {
+      console.error('Error saving access details:', err);
+      alert('Failed to save access details. Please try again.');
+    }
+  };
+
+  const copyToClipboard = (text, field) => {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        // You could add a small notification here
+        alert(`${field} copied to clipboard!`);
+      })
+      .catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+  };
+
   const renderRentals = () => {
     // Filter rentals based on active tab
     const filteredRentals = rentals.filter(rental => {
@@ -245,20 +332,29 @@ const RentalHistory = () => {
                     </div>
                   </div>
                 )}
-                
-                {dashboardMode === 'buyer' && isActive && (
+                  {dashboardMode === 'buyer' && isActive && (
                   <div className="rental-actions">
-                    <button className="connect-btn">Connect Now</button>
+                    <button 
+                      className="connect-btn"
+                      onClick={() => rental.accessDetails ? handleShowAccessForm(rental) : alert('Access details not yet provided by the owner')}
+                    >
+                      Connect Now
+                    </button>
                   </div>
                 )}
-                
-                {dashboardMode === 'seller' && isActive && (
+                  {dashboardMode === 'seller' && isActive && (
                   <div className="rental-actions">
                     <button 
                       className="complete-btn"
                       onClick={() => handleCompleteRental(rental._id)}
                     >
                       Mark as Complete
+                    </button>
+                    <button 
+                      className="access-btn"
+                      onClick={() => handleShowAccessForm(rental)}
+                    >
+                      {rental.accessDetails ? 'Edit Access Details' : 'Add Access Details'}
                     </button>
                   </div>
                 )}
@@ -328,8 +424,116 @@ const RentalHistory = () => {
             
             {renderRentals()}
           </div>
+        </div>      </div>
+
+      {/* Access Details Form Modal */}
+      {showAccessForm && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2>Computer Access Details</h2>
+              <button className="close-btn" onClick={handleCloseAccessForm}>×</button>
+            </div>
+            <form onSubmit={dashboardMode === 'seller' ? handleSubmitAccessDetails : (e) => e.preventDefault()}>              <div className="form-group">
+                <label htmlFor="ipAddress">IP Address:</label>
+                <div className="input-with-copy">
+                  <input
+                    type="text"
+                    id="ipAddress"
+                    name="ipAddress"
+                    value={accessDetails.ipAddress}
+                    onChange={handleAccessDetailsChange}
+                    placeholder="e.g. 192.168.1.1"
+                    required
+                    readOnly={dashboardMode === 'buyer'}
+                  />
+                  {dashboardMode === 'buyer' && (
+                    <button type="button" className="copy-btn" onClick={() => copyToClipboard(accessDetails.ipAddress, "IP Address")}>
+                      Copy
+                    </button>
+                  )}
+                </div>
+              </div>              <div className="form-group">
+                <label htmlFor="username">Username:</label>
+                <div className="input-with-copy">
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    value={accessDetails.username}
+                    onChange={handleAccessDetailsChange}
+                    placeholder="e.g. admin"
+                    required
+                    readOnly={dashboardMode === 'buyer'}
+                  />
+                  {dashboardMode === 'buyer' && (
+                    <button type="button" className="copy-btn" onClick={() => copyToClipboard(accessDetails.username, "Username")}>
+                      Copy
+                    </button>
+                  )}
+                </div>
+              </div>              <div className="form-group">
+                <label htmlFor="password">Password:</label>
+                <div className="input-with-copy">
+                  <input
+                    type={dashboardMode === 'buyer' ? 'text' : 'password'}
+                    id="password"
+                    name="password"
+                    value={accessDetails.password}
+                    onChange={handleAccessDetailsChange}
+                    placeholder="Enter password"
+                    required
+                    readOnly={dashboardMode === 'buyer'}
+                  />
+                  {dashboardMode === 'buyer' && (
+                    <button type="button" className="copy-btn" onClick={() => copyToClipboard(accessDetails.password, "Password")}>
+                      Copy
+                    </button>
+                  )}
+                </div>
+              </div>              <div className="form-group">
+                <label htmlFor="accessUrl">Access URL:</label>
+                <div className="input-with-copy">
+                  <input
+                    type="text"
+                    id="accessUrl"
+                    name="accessUrl"
+                    value={accessDetails.accessUrl}
+                    onChange={handleAccessDetailsChange}
+                    placeholder="e.g. https://remote-access.example.com"
+                    required
+                    readOnly={dashboardMode === 'buyer'}
+                  />
+                  {dashboardMode === 'buyer' && (
+                    <button type="button" className="copy-btn" onClick={() => copyToClipboard(accessDetails.accessUrl, "Access URL")}>
+                      Copy
+                    </button>
+                  )}
+                </div>
+              </div>              <div className="form-actions">
+                <button type="button" className="cancel-btn" onClick={handleCloseAccessForm}>
+                  {dashboardMode === 'buyer' ? 'Close' : 'Cancel'}
+                </button>
+                {dashboardMode === 'seller' && (
+                  <button type="submit" className="save-btn">
+                    Save Access Details
+                  </button>
+                )}
+                {dashboardMode === 'buyer' && accessDetails.accessUrl && (
+                  <a 
+                    href={accessDetails.accessUrl.startsWith('http') ? accessDetails.accessUrl : `https://${accessDetails.accessUrl}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="connect-direct-btn"
+                  >
+                    Connect Directly
+                  </a>
+                )}
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

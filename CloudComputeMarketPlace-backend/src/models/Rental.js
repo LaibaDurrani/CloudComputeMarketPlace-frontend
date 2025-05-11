@@ -37,8 +37,7 @@ const RentalSchema = new mongoose.Schema({
     type: String,
     enum: ['pending', 'active', 'completed', 'cancelled'],
     default: 'pending',
-  },
-  paymentInfo: {
+  },  paymentInfo: {
     method: {
       type: String,
       enum: ['credit_card', 'paypal', 'crypto', 'other'],
@@ -49,6 +48,12 @@ const RentalSchema = new mongoose.Schema({
       default: false,
     },
     paidAt: Date,
+  },
+  accessDetails: {
+    ipAddress: String,
+    username: String,
+    password: String, // encrypted
+    accessUrl: String
   },
   createdAt: {
     type: Date,

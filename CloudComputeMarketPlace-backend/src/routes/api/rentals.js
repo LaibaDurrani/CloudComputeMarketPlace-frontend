@@ -4,7 +4,8 @@ const {
   getRentals,
   getRental,
   createRental,
-  updateRentalStatus
+  updateRentalStatus,
+  addAccessDetails
 } = require('../../controllers/rentalController');
 const validate = require('../../middleware/validator');
 const { protect } = require('../../middleware/auth');
@@ -43,6 +44,19 @@ router.put(
   ],
   validate,
   updateRentalStatus
+);
+
+// Add access details to a rental
+router.put(
+  '/:id/access',
+  [
+    check('ipAddress', 'IP Address is required').not().isEmpty(),
+    check('username', 'Username is required').not().isEmpty(),
+    check('password', 'Password is required').not().isEmpty(),
+    check('accessUrl', 'Access URL is required').not().isEmpty()
+  ],
+  validate,
+  addAccessDetails
 );
 
 module.exports = router;
