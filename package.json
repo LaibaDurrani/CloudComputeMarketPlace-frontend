@@ -1,0 +1,25 @@
+{
+  "name": "cloudcomputemarketplace",
+  "version": "1.0.0",
+  "description": "Cloud Compute MarketPlace - A platform to rent and lend computers",
+  "main": "index.js",
+  "scripts": {
+    "install:backend": "cd CloudComputeMarketPlace-backend && npm install",
+    "install:frontend": "cd CloudComputeMarketPlace-frontend && npm install",
+    "install": "npm run install:backend && npm run install:frontend",
+    "backend": "cd CloudComputeMarketPlace-backend && npm run dev",
+    "frontend": "cd CloudComputeMarketPlace-frontend && npm run dev",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "keywords": [
+    "cloud",
+    "compute",
+    "marketplace",
+    "rental"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}
