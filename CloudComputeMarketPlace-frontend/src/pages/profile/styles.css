@@ -1,0 +1,245 @@
+.profile-page {
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+.profile-content {
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar-open .profile-content {
+  margin-left: 280px;
+}
+
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.profile-header:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.profile-image {
+  flex-shrink: 0;
+}
+
+.profile-image img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #f1f5f9;
+  transition: all 0.3s ease;
+}
+
+.profile-image img:hover {
+  transform: scale(1.05);
+  border-color: var(--primary-color);
+}
+
+.section {
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.section:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.form-group input:hover {
+  border-color: #cbd5e1;
+}
+
+.save-btn {
+  background: var(--primary-color);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.save-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.change-password-btn,
+.enable-2fa-btn,
+.add-payment-btn {
+  background: #f1f5f9;
+  color: #1e293b;
+  margin-right: 12px;
+  transition: all 0.3s ease;
+}
+
+.change-password-btn:hover,
+.enable-2fa-btn:hover,
+.add-payment-btn:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info h1 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  color: #1e293b;
+}
+
+.email {
+  color: #64748b;
+  margin: 0 0 4px 0;
+}
+
+.join-date {
+  color: #94a3b8;
+  margin: 0;
+  font-size: 14px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin: 32px 0;
+}
+
+.stat-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.stat-card h3 {
+  margin: 0 0 12px 0;
+  color: #64748b;
+  font-size: 16px;
+}
+
+.stat-value {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--primary-color);
+  display: block;
+  line-height: 1;
+}
+
+.profile-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.section {
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+  margin: 0 0 24px 0;
+  color: #1e293b;
+  font-size: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #64748b;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.save-btn {
+  background: var(--primary-color);
+  color: white;
+}
+
+.save-btn:hover {
+  background: var(--primary-hover);
+}
+
+.change-password-btn,
+.enable-2fa-btn,
+.add-payment-btn {
+  background: #f1f5f9;
+  color: #1e293b;
+  margin-right: 12px;
+}
+
+.change-password-btn:hover,
+.enable-2fa-btn:hover,
+.add-payment-btn:hover {
+  background: #e2e8f0;
+}
+
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .profile-container {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

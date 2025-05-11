@@ -1,0 +1,125 @@
+.settings-page {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  padding-top: 64px;
+  transition: margin-left 0.3s ease;
+}
+
+.settings-page.sidebar-open {
+  margin-left: 280px;
+}
+
+.settings-content {
+  padding: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.settings-content h1 {
+  margin-bottom: 30px;
+  color: #1e293b;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.settings-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.settings-card h2 {
+  color: #1e293b;
+  margin-bottom: 20px;
+  font-size: 1.25rem;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-group input:disabled {
+  background: #f8fafc;
+  cursor: not-allowed;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.edit-btn, .save-btn, .cancel-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.edit-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+.save-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+}
+
+.cancel-btn {
+  background: white;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.notification-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notification-option label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #1e293b;
+  cursor: pointer;
+}
+
+.notification-option input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 768px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .settings-page.sidebar-open {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,147 @@
+.rental-confirmation-page {
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+.rental-confirmation-page.sidebar-open {
+  margin-left: 240px;
+}
+
+.confirmation-content {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+.confirmation-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 24px;
+  background-color: #10B981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-icon svg {
+  width: 32px;
+  height: 32px;
+  stroke: white;
+}
+
+.confirmation-card h1 {
+  text-align: center;
+  color: #10B981;
+  margin-bottom: 16px;
+}
+
+.confirmation-message {
+  text-align: center;
+  color: #64748B;
+  margin-bottom: 32px;
+}
+
+.rental-details,
+.next-steps {
+  margin-bottom: 32px;
+  border-top: 1px solid #E2E8F0;
+  padding-top: 24px;
+}
+
+.rental-details h2,
+.next-steps h2 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #1E293B;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: #64748B;
+}
+
+.detail-value {
+  font-weight: 600;
+  color: #1E293B;
+}
+
+.detail-row.total {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed #E2E8F0;
+  font-size: 16px;
+}
+
+.detail-row.total .detail-label,
+.detail-row.total .detail-value {
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.next-steps ol {
+  list-style-position: inside;
+  padding-left: 0;
+}
+
+.next-steps li {
+  margin-bottom: 12px;
+  color: #1E293B;
+}
+
+.confirmation-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.primary-btn {
+  background-color: #4F46E5;
+  color: white;
+  border: none;
+  flex: 1;
+}
+
+.primary-btn:hover {
+  background-color: #4338CA;
+}
+
+.secondary-btn {
+  background-color: white;
+  color: #4F46E5;
+  border: 1px solid #4F46E5;
+  flex: 1;
+}
+
+.secondary-btn:hover {
+  background-color: #F8FAFC;
+}
+
+@media (max-width: 768px) {
+  .confirmation-actions {
+    flex-direction: column;
+  }
+}

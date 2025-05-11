@@ -1,0 +1,318 @@
+/* General reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.specs-section, .billing-section {
+  background: white;
+  padding: 30px;;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  width: 100%;
+  margin: 0 auto;
+}
+/* Page Wrapper */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Computer Details Section */
+.computer-details {
+  flex: 1;
+  padding-top: 80px;
+  background-color: #f8fafc;
+}
+
+/* Details Content */
+.details-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+h2{
+  padding-bottom: 10px;
+}
+
+/* Details Header */
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-left h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.owner-info {
+  display: flex;
+  gap: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.header-right .price-tag {
+  background: var(--primary-color);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* Details Grid */
+.details-grid {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+/* Main Content and Sidebar */
+.main-content {
+  flex: 2;
+  min-width: 0;
+}
+
+.sidebar {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Section Headings */
+.specifications-section h2,
+.booking-section h2,
+.summary-section h2,
+.use-cases-card h2 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+/* Specifications Grid */
+.specs-grid {
+  display: grid;
+  gap: 16px;
+}
+.spec-label {
+  color: #64748b;
+  font-weight: 500;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.spec-value {
+  color: #1e293b;
+  font-weight: 500;
+  text-align: right;
+  overflow-wrap: break-word;
+  font-size: 14px;
+}
+
+/* Booking Section */
+.booking-section {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.date-select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  background: white;
+}
+
+/* Time Slots */
+.time-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 120px));
+  gap: 12px;
+  justify-content: center;
+}
+
+.time-slot {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 14px;
+}
+
+.time-slot:hover {
+  background: #f1f5f9;
+}
+
+.time-slot.selected {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.time-slot.unavailable {
+  background-color: #e0e0e0;
+  color: #888;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Billing Summary */
+.summary-section {
+  margin-top: 32px;
+}
+
+.billing-details {
+  margin: 20px 0;
+}
+
+.billing-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.billing-row.total {
+  border-bottom: none;
+  font-weight: 600;
+  font-size: 1.1em;
+  margin-top: 12px;
+  color: var(--primary-color);
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.checkout-btn:hover {
+  background:var(--primary-color);
+}
+
+.checkout-btn:disabled {
+  background: #edf5f6;
+  cursor: not-allowed;
+  color: black;
+}
+
+/* Sidebar Cards */
+.availability-card,
+.use-cases-card {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Availability Badge */
+.status-badge {
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-width: 70px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+  height: 22px;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.status-badge.available {
+  background: #22c55e;
+  color: white;
+}
+
+.status-badge.unavailable {
+  background: #ef4444;
+  color: white;
+}
+
+/* Use Cases List */
+.use-cases-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .details-grid {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .spec-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .spec-value {
+    text-align: left;
+  }
+}
+
+.computer-details-page {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  transition: margin-left 0.3s ease;
+}
+
+.computer-details-page.sidebar-open {
+  margin-left: 280px;
+}
+
+.computer-details-content {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .computer-details-page.sidebar-open {
+    margin-left: 0;
+  }
+  
+  .computer-details-content {
+    padding: 20px 15px;
+  }
+}
+
+/* Keep all your existing styles below */

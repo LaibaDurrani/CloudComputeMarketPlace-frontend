@@ -1,0 +1,221 @@
+
+h1 {
+  font-size: 28px;
+  color: black;
+  margin: 0px 0px 8px;
+}
+
+.checkout-page {
+  flex: 1;
+  padding-top: 80px;
+  background-color: #f8fafc;
+}
+.page-container {
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.page-container.sidebar-open {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+}
+
+.checkout-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.booking-summary, 
+.payment-method,
+.price-summary-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  width: 90%;
+  margin: 0 auto; 
+  margin-bottom: 20px;
+}
+
+.checkout-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.summary-details, .price-details {
+  margin: 20px 0;
+}
+
+.summary-row, .price-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.summary-row:last-child,
+.price-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.value {
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.payment-option:hover {
+  background: #f8fafc;
+}
+
+/* Price Summary */
+.price-row.total {
+  font-weight: 600;
+  font-size: 1.1em;
+  margin-top: 12px;
+  color: #2563eb;
+}
+
+/* Confirm Payment Button */
+.confirm-payment-btn {
+  width: 100%;  /* Changed from 90% to match container width */
+  padding: 14px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;  /* Simplified margin */
+}
+
+.price-summary-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  width: 90%;
+  margin: 0 auto 20px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.confirm-payment-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  display: block;
+  position: relative;
+}
+
+.confirm-payment-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(1, 66, 71, 0.2);
+}
+
+.confirm-payment-btn:disabled {
+  background: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+/* Card Details Form */
+.card-details {
+  margin-top: 24px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.form-group input:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Form Row for Expiry and CVV */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.booking-summary h2{
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+.payment-method h2{
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .checkout-grid {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .checkout-content {
+    padding: 16px;
+  }
+}

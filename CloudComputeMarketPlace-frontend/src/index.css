@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+  padding-top: 20px;
+}
+
+.dashboard-content,
+.listings-container,
+.rentals-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+/* Add these dark mode styles */
+body.dark-mode {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.dark-mode .app {
+  background-color: #1a1a1a;
+}
+
+.dark-mode .content {
+  background-color: #1a1a1a;
+}
