@@ -221,6 +221,36 @@
   box-shadow: 0 12px 24px rgba(0,0,0,0.1);
 }
 
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  background-color: rgba(239, 246, 255, 0.8);
+  border-radius: 8px;
+  border: 1px dashed #d1d5db;
+}
+
+.no-results p {
+  font-size: 1.1rem;
+  color: #4b5563;
+  margin-bottom: 12px;
+}
+
+.no-results button {
+  background-color: #3b82f6;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.no-results button:hover {
+  background-color: #2563eb;
+}
+
 .computer-header {
   display: flex;
   justify-content: space-between;

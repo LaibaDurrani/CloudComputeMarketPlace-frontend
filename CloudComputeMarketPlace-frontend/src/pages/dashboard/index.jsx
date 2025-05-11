@@ -16,9 +16,36 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeRentalsCount, setActiveRentalsCount] = useState(0);
-  const [userListingsCount, setUserListingsCount] = useState(0);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [userListingsCount, setUserListingsCount] = useState(0);  const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  
+  // Computed filtered computers
+  const filteredComputers = computers
+    .filter(computer => {
+      // Filter by search term
+      if (searchTerm) {
+        const searchLower = searchTerm.toLowerCase().trim();
+        return (
+          (computer.title && computer.title.toLowerCase().includes(searchLower)) ||
+          (computer.description && computer.description.toLowerCase().includes(searchLower)) ||
+          (computer.specs && computer.specs.cpu && computer.specs.cpu.toLowerCase().includes(searchLower)) ||
+          (computer.specs && computer.specs.gpu && computer.specs.gpu.toLowerCase().includes(searchLower)) ||
+          (computer.specs && computer.specs.ram && computer.specs.ram.toLowerCase().includes(searchLower)) ||
+          (computer.specs && computer.specs.storage && computer.specs.storage.toLowerCase().includes(searchLower)) ||
+          (computer.specs && computer.specs.operatingSystem && computer.specs.operatingSystem.toLowerCase().includes(searchLower)) ||
+          (computer.location && computer.location.toLowerCase().includes(searchLower)) ||
+          (computer.categories && computer.categories.some(category => category.toLowerCase().includes(searchLower)))
+        );
+      }
+      return true;
+    })
+    .filter(computer => {
+      // Filter by category
+      if (selectedCategory && computer.categories) {
+        return computer.categories.includes(selectedCategory);
+      }
+      return true;
+    });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,11 +123,11 @@ const Dashboard = () => {
               ) : null}
             </div>
           </div>
-          <div className="filters-section">
-            <div className="filters-header">
-              <h3>Available Computers</h3>
-              <p className="available-count">{computers.length} machines available</p>
-            </div>            <div className="search-filters">
+          <div className="filters-section">            <div className="filters-header">
+              <h3>Available Computers</h3>              <p className="available-count">
+                {filteredComputers.length} machines available
+              </p>
+            </div><div className="search-filters">
               <div className="search-wrapper">
               <FaSearch className="search-icon" />
                 <input 
@@ -115,20 +142,21 @@ const Dashboard = () => {
                 className="filter-select" 
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                <option value="">All Categories</option>
-                <option value="ai">AI & Machine Learning</option>
-                <option value="rendering">3D Rendering</option>
-                <option value="gaming">Gaming</option>
-                <option value="video">Video Editing</option>
-                <option value="dev">Software Development</option>
-                <option value="scientific">Scientific Computing</option>
-                <option value="data">Data Analysis</option>
-                <option value="crypto">Crypto Mining</option>
-                <option value="cad">CAD/CAM</option>
-                <option value="virtualization">Virtualization</option>
-              </select>
-            </div>5          </div>          {loading ? (
+              >                <option value="">All Categories</option>
+                <option value="AI & Machine Learning">AI & Machine Learning</option>
+                <option value="3D Rendering">3D Rendering</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Video Editing">Video Editing</option>
+                <option value="Software Development">Software Development</option>
+                <option value="Scientific Computing">Scientific Computing</option>
+                <option value="Data Analysis">Data Analysis</option>
+                <option value="Crypto Mining">Crypto Mining</option>
+                <option value="CAD/CAM">CAD/CAM</option>
+                <option value="Virtualization">Virtualization</option></select>
+            </div>
+          </div>
+          
+          {loading ? (
             <div className="loading-state">
               <p>Loading computers...</p>
             </div>
@@ -136,35 +164,13 @@ const Dashboard = () => {
             <div className="error-state">
               <p>{error}</p>
               <button onClick={() => window.location.reload()}>Try Again</button>
-            </div>
-          ) : (
-            <div className="computers-grid">              {computers
-                .filter(computer => {
-                  // Filter by search term
-                  if (searchTerm) {
-                    const searchLower = searchTerm.toLowerCase();
-                    return (
-                      computer.title.toLowerCase().includes(searchLower) ||
-                      computer.description.toLowerCase().includes(searchLower) ||
-                      computer.specs.cpu.toLowerCase().includes(searchLower) ||
-                      computer.specs.gpu.toLowerCase().includes(searchLower) ||
-                      computer.specs.ram.toLowerCase().includes(searchLower) ||
-                      computer.specs.storage.toLowerCase().includes(searchLower) ||
-                      computer.location.toLowerCase().includes(searchLower)
-                    );
-                  }
-                  return true;
-                })
-                .filter(computer => {
-                  // Filter by category
-                  if (selectedCategory && computer.categories) {
-                    return computer.categories.some(
-                      category => category.toLowerCase() === selectedCategory.toLowerCase()
-                    );
-                  }
-                  return true;
-                })
-                .map(computer => (
+            </div>          ) : (
+            <div className="computers-grid">              {filteredComputers.length === 0 ? (
+                <div className="no-results">
+                  <p>No computers found matching your search criteria.</p>
+                </div>
+              ) : (
+                filteredComputers.map(computer => (
                   <div key={computer._id} className="computer-card">
                     <div className="computer-header">
                       <div className="header-left">
@@ -209,13 +215,7 @@ const Dashboard = () => {
                         View Details
                       </button>
                     </div>
-                  </div>
-                ))}
-              
-              {computers.length === 0 && !loading && !error && (
-                <div className="no-results">
-                  <p>No computers available matching your criteria</p>
-                </div>
+                  </div>                ))
               )}
             </div>
           )}
