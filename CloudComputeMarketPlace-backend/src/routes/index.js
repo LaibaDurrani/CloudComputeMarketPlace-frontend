@@ -6,6 +6,7 @@ router.use('/api/auth', require('./api/auth'));
 router.use('/api/profile', require('./api/profile'));
 router.use('/api/computers', require('./api/computers'));
 router.use('/api/rentals', require('./api/rentals'));
+router.use('/api/conversations', require('./api/conversations'));
 
 // Base route
 router.get('/', (req, res) => {

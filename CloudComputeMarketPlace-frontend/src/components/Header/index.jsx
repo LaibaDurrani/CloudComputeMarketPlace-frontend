@@ -1,15 +1,19 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useSidebar } from '../../context/SidebarContext';
 import { useDashboardMode } from '../../context/DashboardModeContext';
+import { useNotifications } from '../../context/NotificationsContext';
 import { AuthContext } from '../../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
-import { FaUserCircle } from 'react-icons/fa';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { FaUserCircle, FaEnvelope } from 'react-icons/fa';
 import './styles.css';
 
-const Header = () => {  const navigate = useNavigate();
+const Header = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { setIsSidebarOpen } = useSidebar();
   const { dashboardMode } = useDashboardMode();
   const { currentUser, logout } = useContext(AuthContext);
+  const { unreadMessageCount } = useNotifications();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -49,10 +53,20 @@ const Header = () => {  const navigate = useNavigate();
       </div>
 
       <nav className="header-nav">
-        {getNavLinks()}
-      </nav>
-
+        {getNavLinks()}      </nav>
       <div className="header-actions">
+        {currentUser && (
+          <div 
+            className="messages-icon-container" 
+            onClick={() => navigate('/profile/conversations')}
+            title="View conversations"
+          >
+            <FaEnvelope className="messages-icon" />
+            {unreadMessageCount > 0 && (
+              <div className="unread-badge">{unreadMessageCount > 99 ? '99+' : unreadMessageCount}</div>
+            )}
+          </div>
+        )}
         <div className="user-menu" ref={dropdownRef}>
           <div 
             className="user-profile"

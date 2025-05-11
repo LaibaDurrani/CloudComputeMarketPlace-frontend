@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSidebar } from '../../context/SidebarContext';
 import { useDashboardMode } from '../../context/DashboardModeContext';
 import { AuthContext } from '../../context/AuthContext';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import ConversationsManagement from '../../components/ConversationsManagement';
 import { updateProfile, updatePassword, deleteAccount, getUserComputers, getUserRentals, getRentedOutComputers } from '../../services/api';
 import './styles.css';
 
-const Profile = () => {
+const Profile = ({ activeTab = 'profile' }) => {
   const navigate = useNavigate();
   const { isSidebarOpen } = useSidebar();
   const { dashboardMode, setDashboardMode } = useDashboardMode();
@@ -218,14 +219,47 @@ const Profile = () => {
       setIsDeleteModalOpen(false);
       setLoading(false);
     }
+  };  const [currentTab, setCurrentTab] = useState(activeTab);
+  
+  // Update tab when activeTab prop changes
+  useEffect(() => {
+    setCurrentTab(activeTab);
+  }, [activeTab]);
+  
+  // Navigate to appropriate URL when tab changes
+  const handleTabChange = (tab) => {
+    setCurrentTab(tab);
+    if (tab === 'profile') {
+      navigate('/profile');
+    } else if (tab === 'conversations') {
+      navigate('/profile/conversations');
+    }
   };
+  
   return (
     <>
       <Header />
       <Sidebar />
       <div className={`page-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
         <div className="profile-content">
-          <h1>My Profile</h1>
+          <div className="profile-header-tabs">
+            <h1>My Profile</h1>
+            
+            <div className="profile-tabs">
+              <button 
+                className={`tab-button ${currentTab === 'profile' ? 'active' : ''}`}
+                onClick={() => handleTabChange('profile')}
+              >
+                Profile Info
+              </button>
+              <button 
+                className={`tab-button ${currentTab === 'conversations' ? 'active' : ''}`}
+                onClick={() => handleTabChange('conversations')}
+              >
+                Conversations
+              </button>
+            </div>
+          </div>
           
           {error && (
             <div className="alert alert-error">
@@ -239,7 +273,10 @@ const Profile = () => {
             </div>
           )}
           
-          {loading && !currentUser ? (
+          {/* Display different content based on active tab */}
+          {currentTab === 'conversations' ? (
+            <ConversationsManagement currentUser={currentUser} />
+          ) : loading && !currentUser ? (
             <div className="loading-container">
               <LoadingSpinner />
               <p>Loading your profile...</p>
@@ -499,14 +536,19 @@ const Profile = () => {
                         <span className="link-icon">💻</span>
                         <span>View My Rentals</span>
                       </button>
-                    </li>
-                    <li>
+                    </li>                    <li>
                       <button className="link-btn" onClick={() => {
                         setDashboardMode('seller');
                         navigate('/add-computer');
                       }}>
                         <span className="link-icon">➕</span>
                         <span>Add New Computer</span>
+                      </button>
+                    </li>
+                    <li>
+                      <button className="link-btn" onClick={() => handleTabChange('conversations')}>
+                        <span className="link-icon">💬</span>
+                        <span>My Conversations</span>
                       </button>
                     </li>
                   </ul>

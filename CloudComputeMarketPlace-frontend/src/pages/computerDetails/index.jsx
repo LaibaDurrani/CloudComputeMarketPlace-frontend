@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import Header from '../../components/Header';
-import { useSidebar } from '../../context/SidebarContext'; 
+import { useSidebar } from '../../context/SidebarContext';
+import { AuthContext } from '../../context/AuthContext';
 import { getComputer } from '../../services/api';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import ChatBox from '../../components/ChatBox';
 import './styles.css';
 import '../../App.css'; 
 
 const ComputerDetails = () => {
   const { isSidebarOpen } = useSidebar();
+  const { currentUser } = useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
   
@@ -161,12 +164,19 @@ const ComputerDetails = () => {
             <div className="header-right">
               <div className="price-tag">${computer.price.hourly}/hr</div>
             </div>
-          </div>
-
-          <div className="details-grid">
+          </div>          <div className="details-grid">
             <div className="main-content">
               <section className='specs-section'>
-                <h2>Specifications</h2>
+                <div className="specs-header">
+                  <h2>Specifications</h2>                  {currentUser && (
+                    <ChatBox 
+                      computerId={id} 
+                      computerTitle={computer.title}
+                      currentUser={currentUser} 
+                      ownerId={computer.user?._id || (computer.user && typeof computer.user === 'string' ? computer.user : null)}
+                    />
+                  )}
+                </div>
                 <div className="specs-grid">
                   {Object.entries(computer.specs).map(([key, value]) => (
                     <div key={key} className="spec-item">

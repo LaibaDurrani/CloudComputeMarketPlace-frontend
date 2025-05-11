@@ -17,9 +17,42 @@
 }
 
 .profile-content h1 {
-  margin-bottom: 24px;
   color: #1e293b;
   font-size: 2rem;
+}
+
+.profile-header-tabs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.profile-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.tab-button {
+  background-color: #f1f5f9;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+.tab-button.active {
+  background-color: #014247;
+  color: white;
 }
 
 .profile-grid {

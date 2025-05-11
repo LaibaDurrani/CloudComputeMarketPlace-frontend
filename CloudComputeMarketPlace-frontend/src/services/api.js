@@ -59,4 +59,12 @@ export const getRental = (id) => api.get(`/api/rentals/${id}`);
 export const updateRentalStatus = (id, status) => api.put(`/api/rentals/${id}`, { status });
 export const addRentalAccessDetails = (id, accessDetails) => api.put(`/api/rentals/${id}/access`, accessDetails);
 
+// Conversations API calls
+export const getUserConversations = () => api.get('/api/conversations');
+export const getConversation = (id) => api.get(`/api/conversations/${id}`);
+export const createConversation = (computerId) => api.post('/api/conversations', { computerId });
+export const sendMessage = (conversationId, content) => api.post(`/api/conversations/${conversationId}/messages`, { content });
+export const markMessagesAsRead = (conversationId) => api.put(`/api/conversations/${conversationId}/read`);
+export const getUnreadMessageCount = () => api.get('/api/conversations/unread');
+
 export default api;
