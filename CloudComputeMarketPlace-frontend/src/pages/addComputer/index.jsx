@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
+import PageContainer from '../../components/PageContainer';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { useSidebar } from '../../context/SidebarContext';
 import { createComputer, getComputer, updateComputer } from '../../services/api';
 import './styles.css';
 
 const AddComputer = () => {
   const navigate = useNavigate();
-  const { isSidebarOpen } = useSidebar();
   const { id } = useParams(); // Get the computer ID from URL if in edit mode
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -209,13 +208,15 @@ const AddComputer = () => {
       setError(errorMessage);
       setLoading(false);
     }
-  };  // If we're in edit mode and still loading data, show a loading spinner
+  };  
+  
+  // If we're in edit mode and still loading data, show a loading spinner
   if (isEditMode && loading && !formData.title) {
     return (
       <>
         <Header />
         <Sidebar />
-        <div className={`page-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+        <PageContainer>
           <div className="add-computer-container">
             <div className="form-header">
               <h1>Loading Computer Data</h1>
@@ -225,17 +226,17 @@ const AddComputer = () => {
               <LoadingSpinner />
             </div>
           </div>
-        </div>
+        </PageContainer>
       </>
     );
   }
-
   return (
     <>
       <Header />
       <Sidebar />
-      <div className={`page-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-        <div className="add-computer-container">          <div className="form-header">
+      <PageContainer>
+        <div className="add-computer-container">
+          <div className="form-header">
             <h1>{isEditMode ? 'Edit Your Computer Listing' : 'List Your Computer'}</h1>
             <p>
               {isEditMode 
@@ -597,10 +598,9 @@ const AddComputer = () => {
                   : (isEditMode ? 'Update Computer' : 'List Computer')
                 }
               </button>
-            </div>
-          </form>
+            </div>          </form>
         </div>
-      </div>
+      </PageContainer>
     </>
   );
 };

@@ -25,11 +25,22 @@ const Sidebar = () => {
     { icon: <FaCog />, label: 'Settings', path: '/profile' } // Changed to profile page
   ];
 
-  const currentMenuItems = dashboardMode === 'buyer' ? buyerMenuItems : sellerMenuItems;
+  const currentMenuItems = dashboardMode === 'buyer' ? buyerMenuItems : sellerMenuItems;  // Add keyboard navigation for menu items
+  const handleKeyDown = (e, path) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      navigate(path);
+    }
+  };
 
   return (
     <>
-      <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+      <div 
+        className={`sidebar ${isSidebarOpen ? 'open' : ''}`} 
+        tabIndex={isSidebarOpen ? 0 : -1}
+        role="navigation"
+        aria-label="Main navigation"
+      >
         <div className="sidebar-content">
           <div className="sidebar-logo">
             <div className="nimbus-logo">
@@ -62,9 +73,7 @@ const Sidebar = () => {
                 Seller Mode
               </button>
             </div>
-          </div>
-
-          <div className="sidebar-menu">
+          </div>          <div className="sidebar-menu">
             {currentMenuItems.map((item) => (
               <a
                 key={item.path}
@@ -74,6 +83,10 @@ const Sidebar = () => {
                   e.preventDefault();
                   navigate(item.path);
                 }}
+                onKeyDown={(e) => handleKeyDown(e, item.path)}
+                tabIndex={isSidebarOpen ? 0 : -1}
+                role="menuitem"
+                aria-label={item.label}
               >
                 <span className="menu-icon">{item.icon}</span>
                 <span className="menu-label">{item.label}</span>

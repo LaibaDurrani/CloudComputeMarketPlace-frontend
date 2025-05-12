@@ -15,6 +15,13 @@
   transform: translateX(-100%);
   transition: all 0.3s ease-in-out;
   z-index: 999; 
+  outline: none; /* Remove default focus outline */
+}
+
+/* Create a visible focus indicator for keyboard navigation */
+.sidebar:focus-visible {
+  outline: 2px solid #4a90e2;
+  outline-offset: -2px;
 }
 
 .sidebar-overlay {
@@ -32,6 +39,21 @@
 
 .sidebar.open {
   transform: translateX(0);
+}
+
+/* Add a subtle visual indicator when sidebar is open */
+.page-container.sidebar-open::before {
+  content: "";
+  position: fixed;
+  top: 64px;
+  left: 280px; /* Width of the sidebar */
+  width: calc(100% - 280px);
+  height: calc(100vh - 64px);
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 998;
+  transition: all 0.3s ease-in-out;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .sidebar-content {
@@ -127,6 +149,7 @@
   transition: all 0.2s ease;
   margin: 0.25rem 0;
   border-radius: 0 8px 8px 0;
+  outline: none; /* Remove default focus outline */
 }
 
 .menu-item:hover {
@@ -138,6 +161,13 @@
   background: #edf5f6;
   color: #014247;
   font-weight: 500;
+}
+
+/* Focus indicator for keyboard navigation */
+.menu-item:focus-visible {
+  outline: 2px solid #014247;
+  outline-offset: -2px;
+  box-shadow: 0 0 0 2px rgba(1, 66, 71, 0.2);
 }
 
 .menu-icon {

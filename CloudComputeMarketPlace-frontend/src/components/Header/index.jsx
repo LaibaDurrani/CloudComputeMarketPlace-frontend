@@ -7,10 +7,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaUserCircle, FaEnvelope } from 'react-icons/fa';
 import './styles.css';
 
-const Header = () => {
-  const navigate = useNavigate();
+const Header = () => {  const navigate = useNavigate();
   const location = useLocation();
-  const { setIsSidebarOpen } = useSidebar();
+  const { toggleSidebar } = useSidebar();
   const { dashboardMode } = useDashboardMode();
   const { currentUser, logout } = useContext(AuthContext);
   const { unreadMessageCount } = useNotifications();
@@ -38,15 +37,15 @@ const Header = () => {
 
   return (
     <header className="header">
-      <div className="header-left">
-        <button
+      <div className="header-left">        <button
           className="hamburger-menu"
-          onClick={() => setIsSidebarOpen(prev => !prev)}
+          onClick={toggleSidebar}
+          aria-label="Toggle navigation menu"
         >
           <span></span>
           <span></span>
           <span></span>
-        </button>        <div className="title-group">
+        </button><div className="title-group">
           <div className="nimbus-logo">
             <span>N</span>
             <span>i</span>

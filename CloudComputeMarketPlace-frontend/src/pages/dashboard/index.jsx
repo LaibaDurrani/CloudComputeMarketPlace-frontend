@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
-import { useSidebar } from '../../context/SidebarContext';
+import PageContainer from '../../components/PageContainer';
 import { AuthContext } from '../../context/AuthContext';
 import { getAllComputers, getUserRentals, getUserComputers } from '../../services/api';
 import './styles.css';
@@ -10,7 +10,6 @@ import { FaSearch, FaUser, FaDesktop, FaClock } from 'react-icons/fa';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { isSidebarOpen } = useSidebar();
   const { currentUser } = useContext(AuthContext);
   const [computers, setComputers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -90,8 +89,8 @@ const Dashboard = () => {
 
   return (
     <>
-      <Header />
-      <Sidebar />      <div className={`page-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+      <Header />      <Sidebar />
+      <PageContainer>
         <div className="dashboard-content">
           <div className="nimbus-logo-container">
             <div className="nimbus-logo">
@@ -231,7 +230,7 @@ const Dashboard = () => {
             </div>
           )}
         </div>
-      </div>
+      </PageContainer>
     </>
   );
 };

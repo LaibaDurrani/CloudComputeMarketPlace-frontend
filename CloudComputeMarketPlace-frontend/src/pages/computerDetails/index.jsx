@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import Header from '../../components/Header';
-import { useSidebar } from '../../context/SidebarContext';
+import Sidebar from '../../components/Sidebar';
+import PageContainer from '../../components/PageContainer';
 import { AuthContext } from '../../context/AuthContext';
 import { getComputer } from '../../services/api';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -10,7 +11,6 @@ import './styles.css';
 import '../../App.css'; 
 
 const ComputerDetails = () => {
-  const { isSidebarOpen } = useSidebar();
   const { currentUser } = useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -147,11 +147,12 @@ const ComputerDetails = () => {
       </div>
     );
   }
-
   return (
-    <div className={`computer-details-page ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+    <>
       <Header />
-      <div className="computer-details-content">
+      <Sidebar />
+      <PageContainer className="computer-details-page">
+        <div className="computer-details-content">
         <div className="details-content">
           <div className="details-header">
             <div className="header-left">
@@ -286,11 +287,10 @@ const ComputerDetails = () => {
                 </div>
               )}
             </div>
-          </div>
-
-        </div>
+          </div>        </div>
       </div>
-    </div>
+      </PageContainer>
+    </>
   );
 };
 
