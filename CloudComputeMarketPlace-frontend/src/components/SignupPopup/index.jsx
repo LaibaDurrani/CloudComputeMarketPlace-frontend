@@ -116,16 +116,15 @@ const SignupPopup = ({ isOpen, onClose, onSwitchToLogin }) => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
-            />
-          </div>
-          <div className="form-group">
+            />          </div>          <div className="form-group profile-type-group">
+            <label htmlFor="profileTypeSelect" className="form-label">Account type</label>
             <select
+              id="profileTypeSelect"
               name="profileType"
               value={formData.profileType}
               onChange={handleChange}
               required
-            >
-              <option value="buyer">I want to rent computers</option>
+            >              <option value="buyer">I want to rent computers</option>
               <option value="seller">I want to offer my computers</option>
               <option value="both">Both</option>
             </select>
