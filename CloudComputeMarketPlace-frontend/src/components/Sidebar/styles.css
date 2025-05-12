@@ -46,6 +46,72 @@
   border-bottom: 1px solid #eaeaea;
 }
 
+/* Nimbus Logo Styling in Sidebar */
+.sidebar-logo {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.sidebar-logo .nimbus-logo {
+  display: flex;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  perspective: 400px;
+}
+
+.sidebar-logo .nimbus-logo span {
+  display: inline-block;
+  background: linear-gradient(135deg, #014247, #048b99);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.sidebar-logo .nimbus-logo span:nth-child(1) {
+  animation: sidebar-float 3s ease-in-out infinite;
+}
+
+.sidebar-logo .nimbus-logo span:nth-child(2) {
+  animation: sidebar-float 3s ease-in-out infinite 0.2s;
+}
+
+.sidebar-logo .nimbus-logo span:nth-child(3) {
+  animation: sidebar-float 3s ease-in-out infinite 0.4s;
+}
+
+.sidebar-logo .nimbus-logo span:nth-child(4) {
+  animation: sidebar-float 3s ease-in-out infinite 0.6s;
+}
+
+.sidebar-logo .nimbus-logo span:nth-child(5) {
+  animation: sidebar-float 3s ease-in-out infinite 0.8s;
+}
+
+.sidebar-logo .nimbus-logo span:nth-child(6) {
+  animation: sidebar-float 3s ease-in-out infinite 1s;
+}
+
+.sidebar-logo .nimbus-logo:hover span {
+  animation-play-state: paused;
+  text-shadow: 0 0 10px rgba(4, 139, 153, 0.4);
+}
+
+@keyframes sidebar-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
 
 .sidebar-menu {
   flex: 1;

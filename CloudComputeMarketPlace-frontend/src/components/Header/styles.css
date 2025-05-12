@@ -42,10 +42,63 @@
   flex-direction: column;
 }
 
-.title-group h1 {
-  margin: 0;
+/* Nimbus Logo Styling */
+.title-group .nimbus-logo {
+  display: flex;
   font-size: 1.5rem;
-  color: #333;
+  font-weight: 700;
+  letter-spacing: 2px;
+  perspective: 400px;
+}
+
+.title-group .nimbus-logo span {
+  display: inline-block;
+  background: linear-gradient(135deg, #014247, #048b99);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.title-group .nimbus-logo span:nth-child(1) {
+  animation: header-float 3s ease-in-out infinite;
+}
+
+.title-group .nimbus-logo span:nth-child(2) {
+  animation: header-float 3s ease-in-out infinite 0.2s;
+}
+
+.title-group .nimbus-logo span:nth-child(3) {
+  animation: header-float 3s ease-in-out infinite 0.4s;
+}
+
+.title-group .nimbus-logo span:nth-child(4) {
+  animation: header-float 3s ease-in-out infinite 0.6s;
+}
+
+.title-group .nimbus-logo span:nth-child(5) {
+  animation: header-float 3s ease-in-out infinite 0.8s;
+}
+
+.title-group .nimbus-logo span:nth-child(6) {
+  animation: header-float 3s ease-in-out infinite 1s;
+}
+
+.title-group .nimbus-logo:hover span {
+  animation-play-state: paused;
+  text-shadow: 0 0 10px rgba(4, 139, 153, 0.4);
+}
+
+@keyframes header-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
 }
 
 .subtitle {

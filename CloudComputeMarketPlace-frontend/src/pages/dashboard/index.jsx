@@ -93,6 +93,17 @@ const Dashboard = () => {
       <Header />
       <Sidebar />      <div className={`page-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
         <div className="dashboard-content">
+          <div className="nimbus-logo-container">
+            <div className="nimbus-logo">
+              <span>N</span>
+              <span>i</span>
+              <span>m</span>
+              <span>b</span>
+              <span>u</span>
+              <span>s</span>
+            </div>
+            <div className="nimbus-tagline">Cloud Computing Marketplace</div>
+          </div>
           <div className="welcome-section">
             <div className="welcome-message">
               <h2>Welcome back, {currentUser?.name || 'User'}!</h2>

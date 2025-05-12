@@ -46,9 +46,15 @@ const Header = () => {
           <span></span>
           <span></span>
           <span></span>
-        </button>
-        <div className="title-group">
-          <h1>Logo</h1>
+        </button>        <div className="title-group">
+          <div className="nimbus-logo">
+            <span>N</span>
+            <span>i</span>
+            <span>m</span>
+            <span>b</span>
+            <span>u</span>
+            <span>s</span>
+          </div>
         </div>
       </div>
 

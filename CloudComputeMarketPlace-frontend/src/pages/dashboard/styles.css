@@ -428,6 +428,147 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
+/* Nimbus Logo Styles */
+.nimbus-logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 40px auto 30px;
+  text-align: center;
+  position: relative;
+}
+
+.nimbus-logo {
+  display: flex;
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  perspective: 400px;
+}
+
+.nimbus-logo span {
+  display: inline-block;
+  background: linear-gradient(135deg, #2c82c9, #6db3f2);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.nimbus-logo span:nth-child(1) {
+  animation: float 3s ease-in-out infinite;
+}
+
+.nimbus-logo span:nth-child(2) {
+  animation: float 3s ease-in-out infinite 0.2s;
+}
+
+.nimbus-logo span:nth-child(3) {
+  animation: float 3s ease-in-out infinite 0.4s;
+}
+
+.nimbus-logo span:nth-child(4) {
+  animation: float 3s ease-in-out infinite 0.6s;
+}
+
+.nimbus-logo span:nth-child(5) {
+  animation: float 3s ease-in-out infinite 0.8s;
+}
+
+.nimbus-logo span:nth-child(6) {
+  animation: float 3s ease-in-out infinite 1s;
+}
+
+.nimbus-logo:hover span {
+  animation-play-state: paused;
+  text-shadow: 0 0 10px rgba(108, 179, 242, 0.7);
+}
+
+.nimbus-logo span:hover {
+  transform: translateY(-10px) rotateX(20deg);
+  background: linear-gradient(135deg, #48b1f3, #6cd7ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.nimbus-tagline {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #8c9db5;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+.nimbus-tagline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #b3d4fc, transparent);
+  transform: translateX(-50%);
+  transition: width 0.5s ease;
+}
+
+.nimbus-logo-container:hover .nimbus-tagline::after {
+  width: 100%;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Add a subtle cloud-like effect behind the logo */
+.nimbus-logo-container::before {
+  content: '';
+  position: absolute;
+  width: 150px;
+  height: 50px;
+  background: radial-gradient(ellipse at center, rgba(234, 241, 250, 0.5) 0%, rgba(234, 241, 250, 0) 70%);
+  z-index: -1;
+  opacity: 0.7;
+  filter: blur(5px);
+  transform: translateY(30px);
+}
+
+/* Responsive styles for Nimbus logo */
+@media screen and (max-width: 768px) {
+  .nimbus-logo {
+    font-size: 2.8rem;
+  }
+  
+  .nimbus-tagline {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .nimbus-logo-container {
+    margin: 25px auto 20px;
+  }
+  
+  .nimbus-logo {
+    font-size: 2.2rem;
+  }
+  
+  .nimbus-tagline {
+    font-size: 0.7rem;
+  }
+}
+
 @media (max-width: 768px) {
   .dashboard-content {
     padding: 90px 15px 20px;

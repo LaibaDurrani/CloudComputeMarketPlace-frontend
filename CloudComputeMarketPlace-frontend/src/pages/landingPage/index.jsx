@@ -141,13 +141,11 @@ const LandingPage = () => {
 
   return (
     <div className={`landing-page ${darkMode ? "dark" : ""}`}>
-      <div className="hero-section">
-        <nav
+      <div className="hero-section">        <nav
           className={`navbar ${isScrolled ? "navbar-scrolled" : ""} ${
             darkMode ? "dark" : ""
           }`}
-        >
-          <div className="nav-logo">
+        >          <div className="nav-logo">
             <img src={logo} alt="Logo" />
           </div>
 
@@ -181,15 +179,33 @@ const LandingPage = () => {
               Sign Up
             </a>
           </div>
-        </nav>
-
-        <div className="hero-content">
+        </nav>        <div className="hero-content">
           <div>
+            <div className="hero-nimbus-logo">
+              <div className="nimbus-logo">
+                <span>N</span>
+                <span>i</span>
+                <span>m</span>
+                <span>b</span>
+                <span>u</span>
+                <span>s</span>
+              </div>
+            </div>
             <h1 className="animated-tagline">
-              Your Gateway to <span className="highlight">Affordable</span>
-              <br />
-              High-Performance Computing
+              Cloud Computing <span className="highlight">Simplified</span>
             </h1>
+            <p className="hero-description">
+              Access powerful computing resources on demand through our peer-to-peer marketplace
+            </p>
+            <button 
+              className="get-started-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsSignupOpen(true);
+              }}
+            >
+              Get Started
+            </button>
           </div>
           <div className="hero-image">
             <img src={pic1} alt="Cloud Computing Illustration" />
