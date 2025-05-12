@@ -10,16 +10,21 @@
   align-items: center;
   z-index: 1000;
   animation: fadeIn 0.3s ease-in-out;
+  overflow-y: unset;
+  padding: 2rem 0;
 }
 
 .signup-popup {
   background: white;
-  padding: 2rem;
+  padding: 1.2rem;
   border-radius: 15px;
   width: 100%;
   max-width: 400px;
   position: relative;
   animation: slideIn 0.3s ease-in-out;
+  max-height: unset;
+  overflow-y: unset;
+  margin: 0 auto;
 }
 
 .close-button {
@@ -41,19 +46,20 @@
 .signup-popup h2 {
   text-align: center;
   color: #333;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
 }
 
 .form-group input {
   width: 100%;
-  padding: 0.8rem;
+  padding: 0.4rem;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
   transition: border-color 0.3s ease;
 }
 
@@ -64,12 +70,12 @@
 
 .signup-submit-btn {
   width: 100%;
-  padding: 0.8rem;
+  padding: 0.4rem;
   background-color: #014247;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -80,27 +86,25 @@
 
 .google-signup-btn {
   width: 100%;
-  padding: 0.8rem;
+  padding: 0.4rem;
   background-color: white;
   color: #333;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .google-signup-btn:hover {
   background-color: #f8f8f8;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
-
 
 .google-signup-btn img {
   width: 20px; 
@@ -112,7 +116,8 @@
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 1.5rem 0;
+  margin: 1rem 0;
+  font-size: 0.85rem;
 }
 
 .divider::before,
@@ -130,9 +135,10 @@
 
 .login-link {
   text-align: center;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
   border-top: 1px solid #eee;
+  font-size: 0.85rem;
 }
 
 .login-link span {
@@ -170,5 +176,12 @@
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@media (max-width: 500px) {
+  .signup-popup {
+    max-width: 98vw;
+    padding: 0.3rem;
   }
 }

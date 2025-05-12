@@ -31,16 +31,6 @@ const Sidebar = () => {
     <>
       <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-content">
-          <div className="sidebar-logo">
-            <div className="nimbus-logo">
-              <span>N</span>
-              <span>i</span>
-              <span>m</span>
-              <span>b</span>
-              <span>u</span>
-              <span>s</span>
-            </div>
-          </div>
           <div className="dashboard-switch">
             <div className="switch-buttons">
               <button 
