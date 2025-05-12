@@ -143,15 +143,29 @@ const AddComputer = () => {
       setLoading(true);
       setError(null);
       
+      // Ensure categories is an array with at least one value
+      if (!formData.categories || formData.categories.length === 0) {
+        setError('Please select at least one category');
+        setLoading(false);
+        return;
+      }
+      
       // Format the data for the API
+      const hourlyPrice = parseFloat(formData.price.hourly);
+      if (isNaN(hourlyPrice) || hourlyPrice <= 0) {
+        setError('Please enter a valid hourly price');
+        setLoading(false);
+        return;
+      }
+      
       const computerData = {
         ...formData,
         price: {
-          hourly: parseFloat(formData.price.hourly),
+          hourly: hourlyPrice,
           // Calculate discounted prices
-          daily: parseFloat(formData.price.hourly) * 20, // 20 hours price for a day (discount)
-          weekly: parseFloat(formData.price.hourly) * 20 * 6, // 6 days price for a week (discount)
-          monthly: parseFloat(formData.price.hourly) * 20 * 6 * 3.5, // 3.5 weeks for a month (discount)
+          daily: hourlyPrice * 20, // 20 hours price for a day (discount)
+          weekly: hourlyPrice * 20 * 6, // 6 days price for a week (discount)
+          monthly: hourlyPrice * 20 * 6 * 3.5, // 3.5 weeks for a month (discount)
         },
         // Format availability data - convert string dates to Date objects
         availability: {
@@ -160,7 +174,9 @@ const AddComputer = () => {
             startDate: new Date(period.startDate),
             endDate: new Date(period.endDate)
           }))
-        }
+        },
+        // Ensure categories is explicitly set and is an array
+        categories: Array.isArray(formData.categories) ? formData.categories : []
       };
       
       // Validate that we have at least one valid availability period
@@ -181,10 +197,16 @@ const AddComputer = () => {
         await createComputer(computerData);
       }
       
-      navigate('/mylistings');
-    } catch (err) {
+      navigate('/mylistings');    } catch (err) {
       console.error(`Error ${isEditMode ? 'updating' : 'creating'} computer listing:`, err);
-      setError(err.response?.data?.error || `Failed to ${isEditMode ? 'update' : 'create'} listing. Please try again.`);
+      console.error('Error response:', err.response?.data);
+      
+      // Show more detailed error information
+      const errorMessage = err.response?.data?.error || 
+                          (err.response?.data?.errors && JSON.stringify(err.response.data.errors)) ||
+                          `Failed to ${isEditMode ? 'update' : 'create'} listing. Please try again.`;
+      
+      setError(errorMessage);
       setLoading(false);
     }
   };  // If we're in edit mode and still loading data, show a loading spinner

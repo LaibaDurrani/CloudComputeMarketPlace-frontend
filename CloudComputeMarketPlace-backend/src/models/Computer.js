@@ -43,6 +43,10 @@ const ComputerSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add a location'],
   },
+  categories: {
+    type: [String],
+    required: [true, 'Please add at least one category'],
+  },
   price: {
     hourly: {
       type: Number,
@@ -75,11 +79,10 @@ const ComputerSchema = new mongoose.Schema({
       startDate: Date,
       endDate: Date
     }]
-  },
-  photos: [String],
+  },  photos: [String],
   averageRating: {
     type: Number,
-    min: [1, 'Rating must be at least 1'],
+    min: [0, 'Rating cannot be negative'],
     max: [5, 'Rating cannot be more than 5'],
     default: 0
   },

@@ -39,7 +39,10 @@ export const getRentedOutComputers = () => api.get('/api/profile/rentedout');
 // Computers API calls
 export const getAllComputers = () => api.get('/api/computers');
 export const getComputer = (id) => api.get(`/api/computers/${id}`);
-export const createComputer = (computerData) => api.post('/api/computers', computerData);
+export const createComputer = (computerData) => {
+  console.log('API sending computer data:', JSON.stringify(computerData, null, 2));
+  return api.post('/api/computers', computerData);
+};
 export const updateComputer = (id, computerData) => api.put(`/api/computers/${id}`, computerData);
 export const deleteComputer = (id) => api.delete(`/api/computers/${id}`);
 

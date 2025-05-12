@@ -32,6 +32,7 @@ router.post(
     check('specs.storage', 'Storage specification is required').not().isEmpty(),
     check('specs.operatingSystem', 'Operating system is required').not().isEmpty(),
     check('location', 'Location is required').not().isEmpty(),
+    check('categories', 'At least one category is required').isArray().notEmpty(),
     check('price.hourly', 'Hourly price is required').isNumeric(),
     check('price.daily', 'Daily price is required').isNumeric(),
     check('price.weekly', 'Weekly price is required').isNumeric(),

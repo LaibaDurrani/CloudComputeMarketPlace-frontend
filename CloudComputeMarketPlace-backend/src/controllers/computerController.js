@@ -76,6 +76,8 @@ exports.createComputer = async (req, res) => {
       });
     }
     
+    console.log('Creating computer with data:', JSON.stringify(req.body));
+    
     const computer = await Computer.create(req.body);
     
     res.status(201).json({
@@ -83,10 +85,20 @@ exports.createComputer = async (req, res) => {
       data: computer
     });
   } catch (err) {
-    console.error(err);
+    console.error('Error creating computer:', err);
+    
+    if (err.name === 'ValidationError') {
+      // Get the first validation error message
+      const messages = Object.values(err.errors).map(val => val.message);
+      return res.status(400).json({
+        success: false,
+        error: messages[0]
+      });
+    }
+    
     res.status(500).json({
       success: false,
-      error: 'Server error'
+      error: 'Server error: ' + err.message
     });
   }
 };
