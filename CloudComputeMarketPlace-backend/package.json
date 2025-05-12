@@ -8,7 +8,8 @@
     "test": "jest",
     "data:import": "node src/seeds/seedDatabase.js -i",
     "data:delete": "node src/seeds/seedDatabase.js -d",
-    "seed:access": "node src/seeds/addAccessDetails.js"
+    "seed:access": "node src/seeds/addAccessDetails.js",
+    "update:avatars": "node src/scripts/updateAvatars.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

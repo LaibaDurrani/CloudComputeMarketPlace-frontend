@@ -156,8 +156,7 @@ exports.deleteComputer = async (req, res) => {
         error: 'Computer not found'
       });
     }
-    
-    // Make sure user is computer owner
+      // Make sure user is computer owner
     if (computer.user.toString() !== req.user.id) {
       return res.status(401).json({
         success: false,
@@ -165,7 +164,8 @@ exports.deleteComputer = async (req, res) => {
       });
     }
     
-    await computer.remove();
+    // Use deleteOne() instead of deprecated remove()
+    await Computer.deleteOne({ _id: req.params.id });
     
     res.status(200).json({
       success: true,
