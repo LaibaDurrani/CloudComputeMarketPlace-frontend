@@ -7,8 +7,7 @@ const Computer = require('../models/Computer');
 // @route   GET /api/conversations
 // @access  Private
 exports.getUserConversations = async (req, res) => {
-  try {
-    // Find conversations where the user is either buyer or owner
+  try {    // Find conversations where the user is either buyer or owner
     const conversations = await Conversation.find({
       $or: [
         { buyer: req.user.id },
@@ -18,7 +17,8 @@ exports.getUserConversations = async (req, res) => {
       .populate('computer', 'title photos')
       .populate('buyer', 'name profilePicture')
       .populate('owner', 'name profilePicture')
-      .sort({ lastMessageDate: -1 }); // Sort by the most recent message
+      .sort({ lastMessageDate: -1 }) // Sort by the most recent message
+      .lean(); // Convert to plain JS objects for better performance
     
     res.status(200).json({
       success: true,
@@ -37,12 +37,12 @@ exports.getUserConversations = async (req, res) => {
 // @desc    Get conversation by ID with messages
 // @route   GET /api/conversations/:id
 // @access  Private
-exports.getConversation = async (req, res) => {
-  try {
+exports.getConversation = async (req, res) => {  try {
     const conversation = await Conversation.findById(req.params.id)
       .populate('computer', 'title photos specs price')
       .populate('buyer', 'name profilePicture')
-      .populate('owner', 'name profilePicture');
+      .populate('owner', 'name profilePicture')
+      .lean(); // Convert to plain JS objects for better performance
     
     if (!conversation) {
       return res.status(404).json({
@@ -60,11 +60,11 @@ exports.getConversation = async (req, res) => {
         error: 'Not authorized to access this conversation'
       });
     }
-    
-    // Get messages for this conversation
+      // Get messages for this conversation
     const messages = await Message.find({ conversation: req.params.id })
       .populate('sender', 'name profilePicture')
-      .sort({ createdAt: 1 });
+      .sort({ createdAt: 1 })
+      .lean(); // Convert to plain JS objects for better performance
     
     // Mark messages as read if the current user is the recipient
     if (conversation.buyer.toString() === req.user.id && conversation.unreadBuyer > 0) {
@@ -288,6 +288,15 @@ exports.markAsRead = async (req, res) => {
 // @access  Private
 exports.getUnreadCount = async (req, res) => {
   try {
+    // Ensure user is available
+    if (!req.user || !req.user.id) {
+      console.error('Error getting unread count: User not available in request');
+      return res.status(401).json({
+        success: false,
+        error: 'User authentication failed'
+      });
+    }
+    
     // Find all conversations for this user
     const conversations = await Conversation.find({
       $or: [

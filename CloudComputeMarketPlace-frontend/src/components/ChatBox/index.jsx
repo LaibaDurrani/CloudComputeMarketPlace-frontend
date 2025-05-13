@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { createConversation, getConversation, sendMessage, markMessagesAsRead } from '../../services/api';
 import { useNotifications } from '../../context/NotificationsContext';
 import LoadingSpinner from '../LoadingSpinner';
+import { generateAvatarUrl } from '../../utils/avatar';
 import './styles.css';
 
 const ChatBox = ({ computerId, computerTitle, currentUser, ownerId }) => {
@@ -214,16 +215,17 @@ const ChatBox = ({ computerId, computerTitle, currentUser, ownerId }) => {
                   {messages.map((message) => (
                     <div 
                       key={message._id}
-                      className={`message ${message.sender._id === currentUser.id ? 'sent' : 'received'}`}
-                    >
+                      className={`message ${message.sender._id === currentUser.id ? 'sent' : 'received'}`}                    >
                       {message.sender._id !== currentUser.id && (
                         <div className="message-avatar">
                           {message.sender.profilePicture ? (
                             <img src={message.sender.profilePicture} alt={message.sender.name} />
                           ) : (
-                            <div className="avatar-placeholder">
-                              {message.sender.name.charAt(0).toUpperCase()}
-                            </div>
+                            <img 
+                              src={generateAvatarUrl(message.sender.name)} 
+                              alt={message.sender.name}
+                              className="avatar-image" 
+                            />
                           )}
                         </div>
                       )}

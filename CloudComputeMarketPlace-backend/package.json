@@ -2,17 +2,21 @@
   "name": "cloudcomputemarketplace-backend",
   "version": "1.0.0",
   "description": "Backend for Cloud Compute MarketPlace",
-  "main": "src/server.js",  "scripts": {
+  "main": "src/server.js",
+  "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "jest",
     "data:import": "node src/seeds/seedDatabase.js -i",
     "data:delete": "node src/seeds/seedDatabase.js -d",
     "seed:access": "node src/seeds/addAccessDetails.js",
-    "update:avatars": "node src/scripts/updateAvatars.js"
+    "update:avatars": "node src/scripts/updateAvatars.js",
+    "seed:mass": "node src/seeds/seedMassData.js"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "bcryptjs": "^2.4.3",
+    "cli-progress": "^3.12.0",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

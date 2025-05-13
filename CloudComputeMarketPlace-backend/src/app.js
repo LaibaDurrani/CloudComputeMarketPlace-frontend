@@ -11,6 +11,9 @@ dotenv.config();
 // Connect to database
 connectDB();
 
+// Import index creation utility
+const { createIndexes } = require('./config/indexes');
+
 // Route files
 const routes = require('./routes');
 
@@ -32,5 +35,8 @@ app.use('/', routes);
 
 // Error handler middleware
 app.use(errorHandler);
+
+// Create database indexes when app starts (non-blocking)
+createIndexes().catch(err => console.error('Error creating indexes:', err));
 
 module.exports = app;

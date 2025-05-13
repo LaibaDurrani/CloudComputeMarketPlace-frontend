@@ -7,12 +7,17 @@ const Rental = require('../models/Rental');
 // @access  Private
 exports.updateProfile = async (req, res) => {
   try {
-    const { name, profilePicture, profileType } = req.body;
+    const { name, profileType } = req.body;
 
     const updateFields = {};
-    if (name) updateFields.name = name;
-    if (profilePicture) updateFields.profilePicture = profilePicture;
+    if (name) {
+      updateFields.name = name;
+      // Update the avatar URL when name changes, using DiceBear
+      updateFields.profilePicture = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${encodeURIComponent(name)}`;
+    }
     if (profileType) updateFields.profileType = profileType;
+    
+    // Ignore any profilePicture input from the request - always use DiceBear
 
     const user = await User.findByIdAndUpdate(
       req.user.id,
@@ -46,9 +51,8 @@ exports.updateProfile = async (req, res) => {
 // @desc    Get user's computers
 // @route   GET /api/profile/computers
 // @access  Private
-exports.getUserComputers = async (req, res) => {
-  try {
-    const computers = await Computer.find({ user: req.user.id });
+exports.getUserComputers = async (req, res) => {  try {
+    const computers = await Computer.find({ user: req.user.id }).lean();
 
     res.status(200).json({
       success: true,
@@ -67,11 +71,11 @@ exports.getUserComputers = async (req, res) => {
 // @desc    Get user's rentals
 // @route   GET /api/profile/rentals
 // @access  Private
-exports.getUserRentals = async (req, res) => {
-  try {
+exports.getUserRentals = async (req, res) => {  try {
     const rentals = await Rental.find({ renter: req.user.id })
       .populate('computer', 'title description specs price photos')
-      .populate('owner', 'name email profilePicture');
+      .populate('owner', 'name email profilePicture')
+      .lean();
 
     // Sort rentals by status and date - active first, then by start date
     const sortedRentals = rentals.sort((a, b) => {
@@ -100,12 +104,12 @@ exports.getUserRentals = async (req, res) => {
 // @desc    Get user's computers that are rented out
 // @route   GET /api/profile/rentedout
 // @access  Private
-exports.getRentedOutComputers = async (req, res) => {
-  try {
+exports.getRentedOutComputers = async (req, res) => {  try {
     // Find rentals where the user is the owner
     const rentals = await Rental.find({ owner: req.user.id })
       .populate('computer', 'title description specs price')
-      .populate('renter', 'name email');
+      .populate('renter', 'name email')
+      .lean(); // Using lean() for better performance
 
     res.status(200).json({
       success: true,

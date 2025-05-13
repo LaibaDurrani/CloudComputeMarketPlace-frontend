@@ -5,12 +5,14 @@ import Sidebar from '../../components/Sidebar';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { useSidebar } from '../../context/SidebarContext';
 import { AuthContext } from '../../context/AuthContext';
+import { useStats } from '../../context/StatsContext';
 import { createRental } from '../../services/api';
 import './styles.css';
 
 const Checkout = () => {
   const { isSidebarOpen } = useSidebar();
   const { currentUser } = useContext(AuthContext);
+  const { refreshStats } = useStats();
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -138,6 +140,9 @@ const Checkout = () => {
       
       console.log('Rental created successfully:', response.data.data);
       
+      // Refresh stats after creating rental
+      refreshStats();
+
       // Navigate to confirmation page with rental details
       navigate('/rental-confirmation', { 
         state: { 

@@ -17,22 +17,23 @@ import SellerDashboard from './pages/sellerDashboard';
 import Settings from './pages/settings';
 import RentalHistory from './pages/rentalHistory';
 import { ThemeProvider } from './context/ThemeContext';
+import { StatsProvider } from './context/StatsContext';
 import PricingPage from './pages/pricingPage';
 import PrivateRoute from './components/PrivateRoute';
 import { AuthContext } from './context/AuthContext';
 
 function App() {
-  const { currentUser } = useContext(AuthContext);
-    return (
+  const { currentUser } = useContext(AuthContext);    return (
     <ThemeProvider>
       <DashboardModeProvider>
         <NotificationsProvider>
-          <SidebarProvider>
-            <div className="app">
-              {/* Only show sidebar if user is logged in */}
-              {currentUser && <Sidebar />}
-              <div className="content">
-                <Routes>
+          <StatsProvider>
+            <SidebarProvider>
+              <div className="app">
+                {/* Only show sidebar if user is logged in */}
+                {currentUser && <Sidebar />}
+                <div className="content">
+                  <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/pricing" element={<PricingPage />} />
@@ -50,10 +51,10 @@ function App() {
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/seller-dashboard" element={<SellerDashboard />} />
                   <Route path="/rental-history" element={<RentalHistory />} />
-                </Route>
-              </Routes>            </div>
-          </div>
-        </SidebarProvider>
+                </Route>              </Routes>            </div>
+            </div>
+          </SidebarProvider>
+          </StatsProvider>
         </NotificationsProvider>
       </DashboardModeProvider>
     </ThemeProvider>

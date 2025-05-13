@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUserConversations, getConversation, sendMessage, markMessagesAsRead } from '../../services/api';
 import { useNotifications } from '../../context/NotificationsContext';
 import LoadingSpinner from '../LoadingSpinner';
+import { generateAvatarUrl } from '../../utils/avatar';
 import './styles.css';
 
 const ConversationsManagement = ({ currentUser }) => {
@@ -213,8 +214,7 @@ const ConversationsManagement = ({ currentUser }) => {
                 <div 
                   key={conversation._id} 
                   className={`conversation-item ${activeConversation?._id === conversation._id ? 'active' : ''}`}
-                  onClick={() => handleConversationClick(conversation)}
-                >
+                  onClick={() => handleConversationClick(conversation)}                >
                   <div className="conversation-avatar">
                     {otherParticipant?.profilePicture ? (
                       <img 
@@ -222,9 +222,10 @@ const ConversationsManagement = ({ currentUser }) => {
                         alt={otherParticipant.name} 
                       />
                     ) : (
-                      <div className="avatar-placeholder">
-                        {otherParticipant?.name?.charAt(0).toUpperCase()}
-                      </div>
+                      <img 
+                        src={generateAvatarUrl(otherParticipant?.name || 'user')} 
+                        alt={otherParticipant?.name || 'User'} 
+                      />
                     )}
                   </div>
                   <div className="conversation-details">
@@ -273,16 +274,16 @@ const ConversationsManagement = ({ currentUser }) => {
                 messages.map((message) => (
                   <div 
                     key={message._id}
-                    className={`message ${message.sender._id === currentUser.id ? 'sent' : 'received'}`}
-                  >
+                    className={`message ${message.sender._id === currentUser.id ? 'sent' : 'received'}`}                  >
                     {message.sender._id !== currentUser.id && (
                       <div className="message-avatar">
                         {message.sender.profilePicture ? (
                           <img src={message.sender.profilePicture} alt={message.sender.name} />
                         ) : (
-                          <div className="avatar-placeholder">
-                            {message.sender.name.charAt(0).toUpperCase()}
-                          </div>
+                          <img 
+                            src={generateAvatarUrl(message.sender.name)} 
+                            alt={message.sender.name} 
+                          />
                         )}
                       </div>
                     )}

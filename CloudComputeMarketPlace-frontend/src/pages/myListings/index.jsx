@@ -3,17 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import { useSidebar } from '../../context/SidebarContext';
+import { useStats } from '../../context/StatsContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import ConfirmationPopup from '../../components/ConfirmationPopup';
 import { getUserComputers, getRentedOutComputers, deleteComputer } from '../../services/api';
 import './styles.css';
 
 const MyListings = () => {
   const navigate = useNavigate();
   const { isSidebarOpen } = useSidebar();
+  const { refreshStats } = useStats();
   const [listings, setListings] = useState([]);
   const [rentals, setRentals] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);  const [stats, setStats] = useState({
+  const [error, setError] = useState(null);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [computerToDelete, setComputerToDelete] = useState(null);
+  const [stats, setStats] = useState({
     totalEarnings: 0,
     activeRentals: 0,
     totalHours: 0
@@ -110,37 +116,49 @@ const MyListings = () => {
     navigate(`/edit-computer/${listingId}`);
   };
   
-  const handleDelete = async (listingId) => {
-    if (window.confirm('Are you sure you want to delete this listing?')) {
-      try {
-        await deleteComputer(listingId);
-        
-        // Update the listings state by filtering out the deleted listing
-        setListings(listings.filter(listing => listing.id !== listingId));
-        
-        // Update the stats
-        const updatedListings = listings.filter(listing => listing.id !== listingId);
-        const totalEarnings = updatedListings.reduce(
-          (sum, listing) => sum + listing.totalEarnings, 0
-        );
-        
-        const activeRentals = updatedListings.reduce(
-          (sum, listing) => sum + listing.activeRentals, 0
-        );
-        
-        const totalHours = updatedListings.reduce(
-          (sum, listing) => sum + listing.totalHours, 0
-        );
-        
-        setStats({
-          totalEarnings: totalEarnings.toFixed(2),
-          activeRentals,
-          totalHours
-        });
-      } catch (err) {
-        console.error('Error deleting listing:', err);
-        setError('Failed to delete listing. Please try again.');
-      }
+  const initiateDelete = (listingId) => {
+    setComputerToDelete(listingId);
+    setIsConfirmationOpen(true);
+  };
+  const confirmDelete = async () => {
+    try {
+      const listingId = computerToDelete;
+      await deleteComputer(listingId);
+      
+      // Update the listings state by filtering out the deleted listing
+      setListings(listings.filter(listing => listing.id !== listingId));
+      
+      // Update the stats
+      const updatedListings = listings.filter(listing => listing.id !== listingId);
+      const totalEarnings = updatedListings.reduce(
+        (sum, listing) => sum + listing.totalEarnings, 0
+      );
+      
+      const activeRentals = updatedListings.reduce(
+        (sum, listing) => sum + listing.activeRentals, 0
+      );
+      
+      const totalHours = updatedListings.reduce(
+        (sum, listing) => sum + listing.totalHours, 0
+      );
+      
+      // Refresh sidebar stats after deletion
+      refreshStats();
+      
+      setStats({
+        totalEarnings: totalEarnings.toFixed(2),
+        activeRentals,
+        totalHours
+      });
+      
+      // Close the confirmation popup
+      setIsConfirmationOpen(false);
+      setComputerToDelete(null);
+      refreshStats();
+    } catch (err) {
+      console.error('Error deleting listing:', err);
+      setError('Failed to delete listing. Please try again.');
+      setIsConfirmationOpen(false);
     }
   };
   
@@ -293,7 +311,7 @@ const MyListings = () => {
                     </button>
                     <button 
                       className="delete-btn"
-                      onClick={() => handleDelete(listing.id)}
+                      onClick={() => initiateDelete(listing.id)}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style={{marginRight: '6px'}}>
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
@@ -308,6 +326,15 @@ const MyListings = () => {
           )}
         </div>
       </div>
+      
+      {/* Confirmation Popup */}
+      <ConfirmationPopup
+        isOpen={isConfirmationOpen}
+        onClose={() => setIsConfirmationOpen(false)}
+        onConfirm={confirmDelete}
+        title="Delete Computer Listing"
+        message="Are you sure you want to delete this computer listing? This action cannot be undone."
+      />
     </>
   );
 };

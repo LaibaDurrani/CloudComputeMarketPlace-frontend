@@ -8,6 +8,7 @@ import Sidebar from '../../components/Sidebar';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ConversationsManagement from '../../components/ConversationsManagement';
 import { updateProfile, updatePassword, deleteAccount, getUserComputers, getUserRentals, getRentedOutComputers } from '../../services/api';
+import { generateAvatarUrl } from '../../utils/avatar';
 import './styles.css';
 
 const Profile = ({ activeTab = 'profile' }) => {
@@ -285,30 +286,14 @@ const Profile = ({ activeTab = 'profile' }) => {
             <>
               <div className="profile-grid">
                 {/* Profile Summary Card */}
-                <section className="profile-summary">
-                  <div className="profile-header">
-                    <div className="profile-image">
-                      {formData.profilePicture ? (
-                        <img 
-                          src={formData.profilePicture} 
-                          alt={`${formData.name}'s profile`} 
-                        />
-                      ) : (
-                        <div className="profile-avatar-placeholder">
-                          {formData.name ? formData.name.charAt(0).toUpperCase() : 'U'}
-                        </div>
-                      )}
+                <section className="profile-summary">                  <div className="profile-header">                    <div className="profile-image">
+                      <img 
+                        src={generateAvatarUrl(formData.name)}
+                        alt={`${formData.name}'s profile`}
+                      />
                       {isEditing && (
-                        <div className="image-upload">
-                          <label htmlFor="profilePicture">Change Photo</label>
-                          <input 
-                            type="text" 
-                            id="profilePicture"
-                            name="profilePicture"
-                            placeholder="Enter image URL"
-                            value={formData.profilePicture}
-                            onChange={handleInputChange}
-                          />
+                        <div className="image-info">
+                          <p className="avatar-note">Your profile picture is generated automatically based on your name.</p>
                         </div>
                       )}
                     </div>
@@ -475,8 +460,7 @@ const Profile = ({ activeTab = 'profile' }) => {
                           value={passwordData.currentPassword}
                           onChange={handlePasswordChange}
                           required
-                        />
-                      </div>
+                        />                      </div>
                       
                       <div className="form-group">
                         <label htmlFor="newPassword">New Password</label>

@@ -16,12 +16,16 @@ exports.register = async (req, res) => {
       });
     }
 
-    // Create user
+    // Generate DiceBear avatar URL using name as seed
+    const avatarUrl = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${encodeURIComponent(name)}`;
+
+    // Create user with generated avatar
     const user = await User.create({
       name,
       email,
       password,
       profileType: profileType || 'buyer',
+      profilePicture: avatarUrl,
     });
 
     sendTokenResponse(user, 201, res);
@@ -84,7 +88,24 @@ exports.login = async (req, res) => {
 // @access  Private
 exports.getMe = async (req, res) => {
   try {
+    // Ensure user is available
+    if (!req.user || !req.user.id) {
+      console.error('Error in getMe: User not available in request');
+      return res.status(401).json({
+        success: false,
+        error: 'User authentication failed'
+      });
+    }
+    
     const user = await User.findById(req.user.id);
+    
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: 'User not found'
+      });
+    }
 
     res.status(200).json({
       success: true,

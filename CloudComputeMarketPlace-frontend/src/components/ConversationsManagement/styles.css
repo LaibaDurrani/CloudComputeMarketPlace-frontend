@@ -60,6 +60,8 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  background-color: white; /* Ensures transparent backgrounds in SVGs show properly */
+  border: 1px solid #e0e0e0; /* Subtle border */
 }
 
 .avatar-placeholder {
@@ -209,6 +211,8 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  background-color: white;
+  border: 1px solid #e0e0e0;
 }
 
 .message-bubble {

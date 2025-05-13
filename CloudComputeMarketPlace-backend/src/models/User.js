@@ -26,10 +26,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ['buyer', 'seller', 'both'],
     default: 'buyer'
-  },
-  profilePicture: {
+  },  profilePicture: {
     type: String,
-    default: 'default-avatar.jpg'
+    default: function() {
+      return `https://api.dicebear.com/7.x/pixel-art/svg?seed=anonymous-${this._id || Date.now()}`;
+    }
   },
   createdAt: {
     type: Date,

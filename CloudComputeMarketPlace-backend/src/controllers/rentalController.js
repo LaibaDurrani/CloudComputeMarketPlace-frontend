@@ -4,12 +4,12 @@ const Computer = require('../models/Computer');
 // @desc    Get all rentals
 // @route   GET /api/rentals
 // @access  Private (Admin only - future implementation)
-exports.getRentals = async (req, res) => {
-  try {
+exports.getRentals = async (req, res) => {  try {
     const rentals = await Rental.find()
       .populate('computer', 'title description specs price')
       .populate('renter', 'name email')
-      .populate('owner', 'name email');
+      .populate('owner', 'name email')
+      .lean(); // Using lean() for better performance
 
     res.status(200).json({
       success: true,
@@ -28,12 +28,12 @@ exports.getRentals = async (req, res) => {
 // @desc    Get single rental
 // @route   GET /api/rentals/:id
 // @access  Private (Only renter or owner)
-exports.getRental = async (req, res) => {
-  try {
+exports.getRental = async (req, res) => {  try {
     const rental = await Rental.findById(req.params.id)
       .populate('computer', 'title description specs price photos')
       .populate('renter', 'name email profilePicture')
-      .populate('owner', 'name email profilePicture');
+      .populate('owner', 'name email profilePicture')
+      .lean(); // Using lean() for better performance
 
     if (!rental) {
       return res.status(404).json({

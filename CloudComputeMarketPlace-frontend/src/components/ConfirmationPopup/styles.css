@@ -1,0 +1,99 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-container h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.modal-container p {
+  margin: 15px 0 20px;
+  color: #555;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-btn {
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.cancel-btn:hover {
+  background-color: #d0d0d0;
+}
+
+.danger-btn {
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.danger-btn:hover {
+  background-color: #b71c1c;
+}
+
+/* Dark mode styles */
+body.dark-mode .modal-container {
+  background-color: #2d3748;
+  color: #f7fafc;
+}
+
+body.dark-mode .modal-container h2 {
+  color: #f7fafc;
+}
+
+body.dark-mode .modal-container p {
+  color: #e2e8f0;
+}
+
+body.dark-mode .cancel-btn {
+  background-color: #4a5568;
+  color: #f7fafc;
+}
+
+body.dark-mode .cancel-btn:hover {
+  background-color: #2d3748;
+}
+
+body.dark-mode .danger-btn {
+  background-color: #e53e3e;
+}
+
+body.dark-mode .danger-btn:hover {
+  background-color: #c53030;
+}

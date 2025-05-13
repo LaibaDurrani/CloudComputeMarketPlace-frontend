@@ -5,12 +5,55 @@ const Computer = require('../models/Computer');
 // @access  Public
 exports.getComputers = async (req, res) => {
   try {
-    // TODO: Add filtering, pagination, etc.
-    const computers = await Computer.find().populate('user', 'name profilePicture');
+    // Pagination parameters
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 30; // Default to 30 listings per page
+    const startIndex = (page - 1) * limit;
+    
+    // Search and filter parameters
+    const searchQuery = {};
+    
+    // Apply category filter if provided
+    if (req.query.category) {
+      searchQuery.categories = req.query.category;
+    }
+    
+    // Apply text search if provided
+    if (req.query.search) {
+      const searchRegex = new RegExp(req.query.search, 'i');
+      searchQuery.$or = [
+        { title: searchRegex },
+        { description: searchRegex },
+        { 'specs.cpu': searchRegex },
+        { 'specs.gpu': searchRegex },
+        { 'specs.ram': searchRegex },
+        { 'specs.storage': searchRegex },
+        { 'specs.operatingSystem': searchRegex },
+        { location: searchRegex }
+      ];
+    }
+    
+    // Count total computers matching the query
+    const total = await Computer.countDocuments(searchQuery);
+      // Get paginated computers using lean() for performance
+    const computers = await Computer.find(searchQuery)
+      .populate('user', 'name profilePicture')
+      .skip(startIndex)
+      .limit(limit)
+      .lean(); // Convert to plain JS objects for better performance
+    
+    // Calculate pagination info
+    const pagination = {
+      current: page,
+      limit: limit,
+      total: Math.ceil(total / limit),
+      totalItems: total
+    };
     
     res.status(200).json({
       success: true,
       count: computers.length,
+      pagination,
       data: computers
     });
   } catch (err) {
@@ -25,11 +68,11 @@ exports.getComputers = async (req, res) => {
 // @desc    Get single computer
 // @route   GET /api/computers/:id
 // @access  Public
-exports.getComputer = async (req, res) => {
-  try {
+exports.getComputer = async (req, res) => {  try {
     const computer = await Computer.findById(req.params.id)
       .populate('user', 'name profilePicture')
-      .populate('reviews.user', 'name profilePicture');
+      .populate('reviews.user', 'name profilePicture')
+      .lean(); // Using lean() for better performance
     
     if (!computer) {
       return res.status(404).json({

@@ -6,7 +6,7 @@ import PageContainer from '../../components/PageContainer';
 import { AuthContext } from '../../context/AuthContext';
 import { getAllComputers, getUserRentals, getUserComputers } from '../../services/api';
 import './styles.css';
-import { FaSearch, FaUser, FaDesktop, FaClock } from 'react-icons/fa';
+import { FaSearch, FaUser, FaDesktop, FaClock, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -15,76 +15,73 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeRentalsCount, setActiveRentalsCount] = useState(0);
-  const [userListingsCount, setUserListingsCount] = useState(0);  const [searchTerm, setSearchTerm] = useState('');
+  const [userListingsCount, setUserListingsCount] = useState(0);  
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   
-  // Computed filtered computers
-  const filteredComputers = computers
-    .filter(computer => {
-      // Filter by search term
-      if (searchTerm) {
-        const searchLower = searchTerm.toLowerCase().trim();
-        return (
-          (computer.title && computer.title.toLowerCase().includes(searchLower)) ||
-          (computer.description && computer.description.toLowerCase().includes(searchLower)) ||
-          (computer.specs && computer.specs.cpu && computer.specs.cpu.toLowerCase().includes(searchLower)) ||
-          (computer.specs && computer.specs.gpu && computer.specs.gpu.toLowerCase().includes(searchLower)) ||
-          (computer.specs && computer.specs.ram && computer.specs.ram.toLowerCase().includes(searchLower)) ||
-          (computer.specs && computer.specs.storage && computer.specs.storage.toLowerCase().includes(searchLower)) ||
-          (computer.specs && computer.specs.operatingSystem && computer.specs.operatingSystem.toLowerCase().includes(searchLower)) ||
-          (computer.location && computer.location.toLowerCase().includes(searchLower)) ||
-          (computer.categories && computer.categories.some(category => category.toLowerCase().includes(searchLower)))
-        );
-      }
-      return true;
-    })
-    .filter(computer => {
-      // Filter by category
-      if (selectedCategory && computer.categories) {
-        return computer.categories.includes(selectedCategory);
-      }
-      return true;
-    });
-
-  useEffect(() => {
-    const fetchData = async () => {
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [itemsPerPage] = useState(30);
+  const [totalItems, setTotalItems] = useState(0);
+    // We don't need to filter computers locally anymore since we're using backend filtering
+  const filteredComputers = computers;
+  // Function to fetch computers based on filters and pagination
+  const fetchComputers = async () => {
+    try {
+      setLoading(true);
+      const response = await getAllComputers(
+        currentPage, 
+        itemsPerPage, 
+        searchTerm, 
+        selectedCategory
+      );
+      
+      setComputers(response.data.data);
+      setTotalPages(response.data.pagination.total);
+      setTotalItems(response.data.pagination.totalItems);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching computers:", err);
+      setError("Failed to load computers. Please try again later.");
+      setLoading(false);
+    }
+  };
+  
+  // Fetch user data separately from computers
+  const fetchUserData = async () => {
+    if (currentUser) {
       try {
-        setLoading(true);
-        const response = await getAllComputers();
-        setComputers(response.data.data);
+        const rentalsResponse = await getUserRentals();
+        const activeRentals = rentalsResponse.data.data.filter(
+          rental => rental.status === 'active'
+        );
+        setActiveRentalsCount(activeRentals.length);
         
-        // If user is logged in, fetch their rentals and listings
-        if (currentUser) {
-          try {
-            const rentalsResponse = await getUserRentals();
-            const activeRentals = rentalsResponse.data.data.filter(
-              rental => rental.status === 'active'
-            );
-            setActiveRentalsCount(activeRentals.length);
-          } catch (err) {
-            console.error("Error fetching rentals:", err);
-          }
-          
-          // If user is a seller or both, fetch their computer listings
-          if (currentUser.profileType === 'seller' || currentUser.profileType === 'both') {
-            try {
-              const listingsResponse = await getUserComputers();
-              setUserListingsCount(listingsResponse.data.data.length);
-            } catch (err) {
-              console.error("Error fetching user listings:", err);
-            }
-          }
+        // If user is a seller or both, fetch their computer listings
+        if (currentUser.profileType === 'seller' || currentUser.profileType === 'both') {
+          const listingsResponse = await getUserComputers();
+          setUserListingsCount(listingsResponse.data.data.length);
         }
-        
-        setLoading(false);
       } catch (err) {
-        console.error("Error fetching computers:", err);
-        setError("Failed to load computers. Please try again later.");
-        setLoading(false);
+        console.error("Error fetching user data:", err);
       }
-    };
-    
-    fetchData();
+    }
+  };
+  
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  // Effect to fetch computers when filters or pagination changes
+  useEffect(() => {
+    fetchComputers();
+  }, [currentPage, searchTerm, selectedCategory]);
+  
+  // Effect to fetch user data when user changes
+  useEffect(() => {
+    fetchUserData();
   }, [currentUser]);
 
   return (
@@ -132,10 +129,9 @@ const Dashboard = () => {
                 </div>
               ) : null}
             </div>
-          </div>
-          <div className="filters-section">            <div className="filters-header">
+          </div>          <div className="filters-section">            <div className="filters-header">
               <h3>Available Computers</h3>              <p className="available-count">
-                {filteredComputers.length} machines available
+                {totalItems} machines available
               </p>
             </div><div className="search-filters">
               <div className="search-wrapper">
@@ -145,14 +141,20 @@ const Dashboard = () => {
                   placeholder="Search by specifications..."
                   className="search-input"
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                    setCurrentPage(1); // Reset to first page on search
+                  }}
                 />
               </div>
               <select 
                 className="filter-select" 
                 value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >                <option value="">All Categories</option>
+                onChange={(e) => {
+                  setSelectedCategory(e.target.value);
+                  setCurrentPage(1); // Reset to first page on category change
+                }}
+              ><option value="">All Categories</option>
                 <option value="AI & Machine Learning">AI & Machine Learning</option>
                 <option value="3D Rendering">3D Rendering</option>
                 <option value="Gaming">Gaming</option>
@@ -226,7 +228,30 @@ const Dashboard = () => {
                       </button>
                     </div>
                   </div>                ))
-              )}
+              )}            </div>
+          )}
+            {/* Pagination Controls */}
+          {totalPages > 1 && !loading && !error && (
+            <div className="pagination-controls">
+              <button 
+                className="pagination-button" 
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                <FaChevronLeft /> Prev
+              </button>
+              
+              <div className="pagination-info">
+                Page {currentPage} of {totalPages}
+              </div>
+              
+              <button 
+                className="pagination-button"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next <FaChevronRight />
+              </button>
             </div>
           )}
         </div>

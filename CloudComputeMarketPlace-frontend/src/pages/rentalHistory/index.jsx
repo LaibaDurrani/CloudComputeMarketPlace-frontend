@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSidebar } from '../../context/SidebarContext';
 import { useDashboardMode } from '../../context/DashboardModeContext';
+import { useStats } from '../../context/StatsContext';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -10,6 +11,7 @@ import './styles.css';
 const RentalHistory = () => {
   const { isSidebarOpen } = useSidebar();
   const { dashboardMode } = useDashboardMode();
+  const { refreshStats } = useStats();
   const [activeTab, setActiveTab] = useState('active');
   const [rentals, setRentals] = useState([]);
   const [computers, setComputers] = useState([]);
@@ -84,7 +86,11 @@ const RentalHistory = () => {
       setRentals(rentals.map(rental => 
         rental._id === rentalId ? { ...rental, status } : rental
       ));
-      // Update stats after status change
+      
+      // Refresh sidebar stats when rental status changes
+      refreshStats();
+      
+      // Update local stats after status change
       if (status === 'active') {
         setStats({
           ...stats,
@@ -110,6 +116,7 @@ const RentalHistory = () => {
           completed: stats.completed + 1
         });
       }
+      refreshStats();
     } catch (err) {
       console.error(`Error updating rental to ${status}:`, err);
       setError(`Failed to update rental status. Please try again.`);
@@ -189,9 +196,11 @@ const RentalHistory = () => {
             } 
           : rental
       ));
-      
-      setShowAccessForm(false);
+        setShowAccessForm(false);
       setSelectedRental(null);
+      
+      // Refresh sidebar stats after updating access details
+      refreshStats();
       
       // Show success message (you could add a toast/notification here)
       alert('Access details saved successfully');

@@ -5,11 +5,13 @@ import Sidebar from '../../components/Sidebar';
 import PageContainer from '../../components/PageContainer';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { createComputer, getComputer, updateComputer } from '../../services/api';
+import { useStats } from '../../context/StatsContext';
 import './styles.css';
 
 const AddComputer = () => {
   const navigate = useNavigate();
   const { id } = useParams(); // Get the computer ID from URL if in edit mode
+  const { refreshStats } = useStats();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -196,7 +198,11 @@ const AddComputer = () => {
         await createComputer(computerData);
       }
       
-      navigate('/mylistings');    } catch (err) {
+      // Refresh the stats in the sidebar after adding/updating a computer
+      refreshStats();
+      
+      navigate('/mylistings');
+    } catch (err) {
       console.error(`Error ${isEditMode ? 'updating' : 'creating'} computer listing:`, err);
       console.error('Error response:', err.response?.data);
       

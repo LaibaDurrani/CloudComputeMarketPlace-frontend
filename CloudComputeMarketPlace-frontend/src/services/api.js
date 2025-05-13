@@ -37,7 +37,12 @@ export const getUserRentals = () => api.get('/api/profile/rentals');
 export const getRentedOutComputers = () => api.get('/api/profile/rentedout');
 
 // Computers API calls
-export const getAllComputers = () => api.get('/api/computers');
+export const getAllComputers = (page = 1, limit = 30, search = '', category = '') => {
+  const params = { page, limit };
+  if (search) params.search = search;
+  if (category) params.category = category;
+  return api.get('/api/computers', { params });
+};
 export const getComputer = (id) => api.get(`/api/computers/${id}`);
 export const createComputer = (computerData) => {
   console.log('API sending computer data:', JSON.stringify(computerData, null, 2));

@@ -24,13 +24,21 @@ exports.protect = async (req, res, next) => {
       error: 'Not authorized to access this route',
     });
   }
-
   try {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = await User.findById(decoded.id);
+    const user = await User.findById(decoded.id);
+    
+    // Check if user still exists in database
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        error: 'The user belonging to this token no longer exists',
+      });
+    }
 
+    req.user = user;
     next();
   } catch (err) {
     return res.status(401).json({
