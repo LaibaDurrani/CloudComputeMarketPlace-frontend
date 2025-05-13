@@ -4,6 +4,7 @@ import { useTheme } from "../../context/ThemeContext";
 import { FaSun, FaMoon } from "react-icons/fa";
 import "./styles.css";
 import logo from "../../assets/logo.png";
+import logo2 from "../../assets/Logo2.png";
 
 import SignupPopup from "../../components/SignupPopup";
 
@@ -146,7 +147,7 @@ const LandingPage = () => {
             darkMode ? "dark" : ""
           }`}
         >          <div className="nav-logo">
-            <img src={logo} alt="Logo" />
+            <img src={isScrolled ? logo : logo2} alt="Logo" />
           </div>
 
           <div className="nav-center">

@@ -445,7 +445,7 @@
 }
 
 .status-badge.available::before {
-  background-color: #16a34a;
+  background-color: #ffffff;
   box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.3);
   animation: pulse 2s infinite;
 }

@@ -1053,13 +1053,13 @@
 
 /* Hero Nimbus Logo Styling */
 .hero-nimbus-logo {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .hero-nimbus-logo .nimbus-logo {
   display: flex;
   font-size: 3.5rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 2px;
   perspective: 400px;
 }
